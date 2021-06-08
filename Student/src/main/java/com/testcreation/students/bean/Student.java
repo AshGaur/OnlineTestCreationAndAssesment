@@ -36,4 +36,7 @@ public class Student {
 	@Column(unique=true)
 	private String phone;
 	
+	public Student(Integer studentId){
+		this.id = studentId;
+	}
 }

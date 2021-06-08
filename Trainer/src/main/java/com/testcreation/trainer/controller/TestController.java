@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.testcreation.trainer.bean.Category;
 import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.exception.TestException;
@@ -49,9 +49,10 @@ public class TestController {
 		return service.getTestsByTrainerId(trainerId);
 	}
 	
-	@PostMapping("/add/trainer/{trainerId}")
-	void addTest(@RequestBody Test tempTest,@PathVariable int trainerId) throws ParseException  {
+	@PostMapping("/add/trainer/{trainerId}/category/{categoryName}")
+	void addTest(@RequestBody Test tempTest,@PathVariable Integer trainerId,@PathVariable String categoryName) throws ParseException  {
 		tempTest.setTrainer(new Trainer(trainerId));
+		tempTest.setCategory(new Category(categoryName));
 		
 		Date fromDate = formatter.parse(tempTest.getFromDateString());
 		tempTest.setFromDate(fromDate);

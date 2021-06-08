@@ -1,7 +1,5 @@
 package com.testcreation.admin.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,29 +25,43 @@ public class CategoryController {
 		return service.getAllCategories();
 	}
 	
-	@RequestMapping("/{id}")
-	Optional<Category> getCategoryById(@PathVariable int id){
-		if(service.getCategoryById(id).isEmpty())
-			throw new CategoryException("Category ID not found !");
-		return service.getCategoryById(id);
-	}
+//	@RequestMapping("/{id}")
+//	Optional<Category> getCategoryById(@PathVariable int id){
+//		if(service.getCategoryById(id).isEmpty())
+//			throw new CategoryException("Category ID not found !");
+//		return service.getCategoryById(id);
+//	}
 	
 	@PostMapping("/add")
 	void addCategory(@RequestBody Category theCategory) {
 		service.addCategory(theCategory);
 	}
 	
-	@PutMapping("/update/{id}")
-	void updateCategory(@RequestBody Category theCategory,@PathVariable Integer id) {
-		if(service.getCategoryById(id).isEmpty())
-			throw new CategoryException("Category ID not found !");
+//	@PutMapping("/update/{id}")
+//	void updateCategory(@RequestBody Category theCategory,@PathVariable Integer id) {
+//		if(service.getCategoryById(id).isEmpty())
+//			throw new CategoryException("Category ID not found !");
+//		service.updateCategory(theCategory);
+//	}
+	
+	@PutMapping("/update/{categoryName}")
+	void updateCategory(@RequestBody Category theCategory,@PathVariable String categoryName) {
+		if(service.getCategoryByName(categoryName).isEmpty())
+			throw new CategoryException("Category not found !");
 		service.updateCategory(theCategory);
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	void deleteCategory(@PathVariable int id) {
-		if(service.getCategoryById(id).isEmpty())
-			throw new CategoryException("Category ID not found !");
-		service.deleteCategory(id);
+//	@DeleteMapping("/delete/{id}")
+//	void deleteCategory(@PathVariable int id) {
+//		if(service.getCategoryById(id).isEmpty())
+//			throw new CategoryException("Category ID not found !");
+//		service.deleteCategory(id);
+//	}
+	
+	@DeleteMapping("/delete/{categoryName}")
+	void deleteCategory(@PathVariable String categoryName) {
+		if(service.getCategoryByName(categoryName).isEmpty())
+			throw new CategoryException("Category not found !");
+		service.deleteCategoryByName(categoryName);
 	}
 }

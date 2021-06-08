@@ -1,4 +1,4 @@
-package com.testcreation.trainer.bean;
+package com.testcreation.admin.bean;
 
 import java.util.Date;
 

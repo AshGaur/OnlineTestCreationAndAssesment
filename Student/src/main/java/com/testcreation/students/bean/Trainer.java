@@ -5,34 +5,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
-@Entity(name="results")
-public class Result {
-	
+@Setter
+@Entity(name="trainers")
+public class Trainer {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(updatable = false)
 	private Integer id;
 	
-	@Column(nullable = false)
-	private Double score=0.0;
-	private Integer attempts=1;
+	private String name;
 	
-	@OneToOne
-	private Student student;
-
-	@OneToOne
-	private Test test;
+	@Column(unique=true)
+	private String email;
 	
+	private String password;
+	
+	@Column(unique=true)
+	private String phone;
+	
+	private Integer subscription = 1;
+	
+	public Trainer(Integer id){
+		this.id = id;
+	}
 }

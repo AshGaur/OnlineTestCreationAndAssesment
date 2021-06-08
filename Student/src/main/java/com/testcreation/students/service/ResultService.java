@@ -1,5 +1,6 @@
 package com.testcreation.students.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class ResultService {
 	}
 
 	//Get Results By Student ID after mapping student
-//	public List<Result> getResultsByStudentId(Integer studentId) {
-//		return repo.findByStudentId(studentId);
-//	}
+	public List<Result> getResultsByStudentId(Integer studentId) {
+		return repo.findByStudentId(studentId);
+	}
 
 	
 }

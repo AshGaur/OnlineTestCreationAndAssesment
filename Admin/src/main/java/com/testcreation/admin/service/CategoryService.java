@@ -21,6 +21,10 @@ public class CategoryService {
 		return repo.findById(id);
 	}
 	
+	public Optional<Category> getCategoryByName(String categoryName){
+		return repo.findByCategoryName(categoryName);
+	}
+	
 	public void addCategory(Category thecategory) {
 		repo.save(thecategory);
 	}
@@ -31,5 +35,9 @@ public class CategoryService {
 
 	public void deleteCategory(int id) {
 		repo.deleteById(id);	
+	}
+	
+	public void deleteCategoryByName(String categoryName) {
+		repo.deleteByCategoryName(categoryName);
 	}
 }

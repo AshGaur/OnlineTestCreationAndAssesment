@@ -1,5 +1,6 @@
 package com.testcreation.students.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.students.bean.Result;
+import com.testcreation.students.bean.Student;
+import com.testcreation.students.bean.Test;
 import com.testcreation.students.service.ResultService;
 
 
@@ -33,13 +36,17 @@ public class ResultController {
 		return service.getResultById(id);
 	}
 	
-//	@GetMapping("/student/{studentId}")
-//	public List<Result> getResultsByStudentId(@PathVariable Integer studentId){
-//		return service.getResultsByStudentId(studentId);
-//	}
+	@GetMapping("/student/{studentId}")
+	public List<Result> getResultsByStudentId(@PathVariable Integer studentId){
+		return service.getResultsByStudentId(studentId);
+	}
 	
-	@PostMapping("/add")
-	void addResult(@RequestBody Result theResult) {
+	@PostMapping("/add/studentId/{studentId}/testId/{testId}")
+	void addResult(@RequestBody Result theResult,@PathVariable Integer studentId,@PathVariable Integer testId) {
+		System.out.println("studentId:"+studentId);
+		System.out.println("testId:"+testId);
+		theResult.setStudent(new Student(studentId));
+		theResult.setTest(new Test(testId));
 		service.addResult(theResult);
 	}
 	
