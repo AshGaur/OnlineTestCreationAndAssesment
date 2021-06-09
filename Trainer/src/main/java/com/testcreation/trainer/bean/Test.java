@@ -35,8 +35,6 @@ public class Test {
 	@Column(nullable = false)
 	private String toDateString;
 	
-	private Integer categoryId;
-	
 	@Column(nullable = false)
 	private String title;
 	

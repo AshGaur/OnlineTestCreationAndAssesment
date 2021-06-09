@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,8 +35,6 @@ public class Test {
 	@Column(nullable = false)
 	private String toDateString;
 	
-	private Integer categoryId;
-	
 	@Column(nullable = false)
 	private String title;
 	
@@ -48,6 +45,9 @@ public class Test {
 	
 	@ManyToOne
 	private Trainer trainer;
+	
+	@ManyToOne
+	private Category category;
 	
 	public Test(Integer testId) {
 		this.id = testId;

@@ -1,4 +1,4 @@
-package com.testcreation.trainer.bean;
+package com.testcreation.students.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -20,7 +20,7 @@ public class TrainerExceptionController {
 		// can't create a new account with already existing phone/email 
 		@ExceptionHandler(value = DataIntegrityViolationException.class)
 		public ResponseEntity<Object> exception(DataIntegrityViolationException e){
-			return new ResponseEntity<>("Phone or Email Already exists !",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Contraint not followed: "+e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 		
 		// if primary key is not auto incremented and user give value null

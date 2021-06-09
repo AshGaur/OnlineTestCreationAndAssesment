@@ -26,6 +26,10 @@ public class TestService {
 		return testRepo.findByTrainerId(trainerId);
 	}
 	
+	public List<Test> getTestsByCategoryName(String categoryName){
+		return testRepo.findByCategoryCategoryName(categoryName);
+	}
+	
 	public void addTest(Test theTest) {
 		testRepo.save(theTest);
 	}

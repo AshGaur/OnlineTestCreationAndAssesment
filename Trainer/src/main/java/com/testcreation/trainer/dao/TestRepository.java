@@ -16,6 +16,8 @@ import com.testcreation.trainer.bean.Test;
 public interface TestRepository extends CrudRepository<Test, Integer> {
 	List<Test> findByTrainerId(Integer trainerId);
 
+	List<Test> findByCategoryCategoryName(String categoryName);
+	
 	@Modifying
 	@Query("delete from tests t where t.trainer.id = :trainerId")
 	void deleteByTrainerId(@Param(value = "trainerId") Integer trainerId);
