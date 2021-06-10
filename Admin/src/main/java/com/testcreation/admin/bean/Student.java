@@ -1,4 +1,4 @@
-package com.testcreation.students.bean;
+package com.testcreation.admin.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

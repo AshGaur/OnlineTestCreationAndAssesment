@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.students.bean.Student;
+import com.testcreation.students.bean.Subscription;
 import com.testcreation.students.exception.StringValidators;
 import com.testcreation.students.exception.StudentException;
 import com.testcreation.students.exception.ValidationException;
@@ -63,6 +64,7 @@ public class StudentController {
 		}
 		validator.validateName(theStudent.getName());
 		validator.validatePassword(theStudent.getPassword());
+		theStudent.setSubscription(new Subscription(1));
 		service.addStudent(theStudent);
 	}
 	

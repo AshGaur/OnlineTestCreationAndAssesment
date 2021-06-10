@@ -36,4 +36,8 @@ public class Subscription {
 	@Column(nullable=false)
 	private Double price=0.0;
 
+	public Subscription(Integer id) {
+		this.id = id;
+	}
+	
 }
