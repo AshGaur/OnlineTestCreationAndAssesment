@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,9 +34,11 @@ public class Trainer {
 	@Column(unique=true)
 	private String phone;
 	
-	private Integer subscription = 1;
+	//private Integer subscription = 1;
 	
 	public Trainer(Integer id){
 		this.id = id;
 	}
+	@ManyToOne
+	private Subscription subscription;
 }

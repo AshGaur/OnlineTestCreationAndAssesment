@@ -1,5 +1,9 @@
 package com.testcreation.trainer.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.testcreation.trainer.bean.Category;
+import com.testcreation.trainer.bean.Subscription;
+import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.exception.StringValidators;
+import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.exception.TrainerException;
+import com.testcreation.trainer.service.TestService;
 import com.testcreation.trainer.service.TrainerService;
 
 @RestController
@@ -27,11 +36,13 @@ public class TrainerController {
 	@Autowired
 	StringValidators validator;
 	
+	// Get all trainers by trainer id
 	@GetMapping("/all")
 	Iterable<Trainer> getAllTrainers() {
 		return service.getAllTrainers();
 	}
 	
+	// Get trainer by trainer id
 	@GetMapping("/{id}")
 	Optional<Trainer> getTrainerById(@PathVariable Integer id) {
 		if(service.getTrainerById(id).isEmpty())
@@ -39,8 +50,17 @@ public class TrainerController {
 		return service.getTrainerById(id);
 	}
 	
-	@PostMapping("/add")
-	void addTrainer(@RequestBody Trainer theTrainer){
+	// Get trainers by subscription id
+	@GetMapping("/subscription/{subscriptionId}")
+	List<Trainer> getTrainerBySubscriptionId(@PathVariable Integer subscriptionId) {
+		if(service.getTrainerBySubscriptionId(subscriptionId).isEmpty())
+			throw new TrainerException("subscription ID doesn't exist or no trainer found related to this subscription");
+		return service.getTrainerBySubscriptionId(subscriptionId);
+	}
+	
+	// Add trainer to a subscription id
+	@PostMapping("/add/subscription/{subscriptionId}")
+	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable int subscriptionId){
 		boolean isRequired = true;
 		if(theTrainer.getEmail()!=null) {
 			validator.validateEmail(theTrainer.getEmail());
@@ -55,6 +75,7 @@ public class TrainerController {
 		}
 		validator.validateName(theTrainer.getName());
 		validator.validatePassword(theTrainer.getPassword());
+		theTrainer.setSubscription(new Subscription(subscriptionId));
 		service.addTrainer(theTrainer);
 	}
 	
@@ -72,3 +93,6 @@ public class TrainerController {
 		service.deleteTrainer(id);
 	}
 }
+	
+	
+

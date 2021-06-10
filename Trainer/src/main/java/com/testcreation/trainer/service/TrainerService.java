@@ -1,5 +1,6 @@
 package com.testcreation.trainer.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,9 @@ public class TrainerService {
 	 public void deleteTrainer(Integer id) {
 		  trainerRepo.deleteById(id);
 	 }
+
+	public List<Trainer> getTrainerBySubscriptionId(Integer id) {
+		
+		 return trainerRepo.findBySubscriptionId(id);
+	}
 }
