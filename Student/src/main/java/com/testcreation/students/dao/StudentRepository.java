@@ -1,5 +1,6 @@
 package com.testcreation.students.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -12,4 +13,6 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
 
 	Optional<Student> save(Integer id);
 //	void save(Integer id);
+	
+	 List<Student> findBySubscriptionId(Integer subscriptionId);
 }

@@ -41,4 +41,7 @@ public class Student {
 	public Student(Integer studentId){
 		this.id = studentId;
 	}
+	public void Subscription(Integer subscriptionId){
+		this.id = subscriptionId;
+	}
 }

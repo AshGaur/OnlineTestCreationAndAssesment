@@ -5,6 +5,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,18 @@ public class StudentController {
 		return service.getStudentById(id);
 	}
 	
+
+	@GetMapping("/subscription/{subscriptionId}")
+	List<Student> getStudentBySubscriptionId(@PathVariable Integer subscriptionId){
+		if(service.getStudentBySubscriptionId(subscriptionId).isEmpty()){
+			throw new StudentException("student id dosent exist");
+		}
+		return service.getStudentBySubscriptionId(subscriptionId);
+	}
+	
+	
+	
+	
 	
 	@PostMapping("/add")
 	void addStudent(@RequestBody Student theStudent) {
@@ -69,7 +82,7 @@ public class StudentController {
 	}
 	
 	@PutMapping("/update/{id}")
-	void updateStudent(@RequestBody Student theStudent,@PathVariable Integer id) throws IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {
+	void updateStudent(@RequestBody Student theStudent,@PathVariable int id) throws IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {
 		Optional<Student> dbStudent = service.getStudentById(id);
 		if(dbStudent.isEmpty()) {
 			throw new StudentException("No Student Present with provided ID !");
