@@ -43,8 +43,6 @@ public class ResultController {
 	
 	@PostMapping("/add/studentId/{studentId}/testId/{testId}")
 	void addResult(@RequestBody Result theResult,@PathVariable Integer studentId,@PathVariable Integer testId) {
-		System.out.println("studentId:"+studentId);
-		System.out.println("testId:"+testId);
 		theResult.setStudent(new Student(studentId));
 		theResult.setTest(new Test(testId));
 		service.addResult(theResult);

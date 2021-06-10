@@ -31,6 +31,6 @@ public class AdminService {
 	public void deleteAdmin(Integer id) {
 		rep.deleteById(id);	
 	}
-
+	
 }
 

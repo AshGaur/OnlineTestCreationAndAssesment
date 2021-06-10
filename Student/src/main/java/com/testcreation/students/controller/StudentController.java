@@ -41,7 +41,7 @@ public class StudentController {
 	@GetMapping("/{id}")
 	Optional<Student> getStudentById(@PathVariable Integer id){
 		if(service.getStudentById(id).isEmpty()){
-			throw new ValidationException("student id dosent exist");
+			throw new StudentException("student id dosent exist");
 		}
 		return service.getStudentById(id);
 	}
@@ -98,7 +98,7 @@ public class StudentController {
 	@DeleteMapping("/delete/{id}")
 	void deleteStudent(@PathVariable Integer id) {
 		if(service.getStudentById(id).isEmpty()){
-			throw new ValidationException("student id dosent exist");
+			throw new StudentException("student id dosent exist");
 		}
 		service.deleteStudent(id);
 	}	
