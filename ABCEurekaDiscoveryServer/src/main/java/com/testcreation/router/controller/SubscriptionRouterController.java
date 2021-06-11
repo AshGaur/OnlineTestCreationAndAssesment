@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.testcreation.router.bean.Subscription;
+import com.testcreation.router.service.SubscriptionRouterService;
+
 //import com.testcreation.admin.bean.Subscription;
 //import com.testcreation.admin.exception.SubscriptionException;
 //import com.testcreation.admin.service.SubscriptionService;
@@ -21,21 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/subscriptions")
 public class SubscriptionRouterController {
 
-//
-//	@Autowired
-//	SubscriptionService service;
-//	
-//	@GetMapping("/all")
-//	Iterable<Subscription> getAllSubscriptions() {
-//		return service.getAllSubscriptions();
-//	}
-//	
-//	@GetMapping("/{id}")
-//	Optional<Subscription> getSubscriptionById(@PathVariable Integer id) {
+
+	@Autowired
+	SubscriptionRouterService service;
+	
+	@GetMapping("/all")
+	public Iterable<Subscription> getAllSubscription() {
+		return service.getAllSubscription();
+	}
+	
+	@GetMapping("/{id}")
+	public Optional<Subscription> getSubscriptionById(@PathVariable Integer id) {
 //		if(service.getSubscriptionById(id).isEmpty())
 //			throw new SubscriptionException("Subscription ID doesn't exist !");
-//		return service.getSubscriptionById(id);
-//	}
+		return service.getSubscriptionById(id);
+	}
 //	
 //	@PostMapping("/add")
 //	void addSubscription(@RequestBody Subscription theSubscription){
