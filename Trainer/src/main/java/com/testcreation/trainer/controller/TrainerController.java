@@ -1,8 +1,5 @@
 package com.testcreation.trainer.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.testcreation.trainer.bean.Category;
 import com.testcreation.trainer.bean.Subscription;
-import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.exception.StringValidators;
-import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.exception.TrainerException;
-import com.testcreation.trainer.service.TestService;
 import com.testcreation.trainer.service.TrainerService;
 
 @RestController
@@ -58,8 +51,16 @@ public class TrainerController {
 		return service.getTrainerBySubscriptionId(subscriptionId);
 	}
 	
+	//Get a new subscription
+	@PutMapping("/{id}/subscription/{subscriptionId}")
+	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
+		Trainer trainer = !service.getTrainerById(id).isEmpty()?service.getTrainerById(id).get():null;
+		trainer.setSubscription(new Subscription(subscriptionId));
+		service.updateTrainer(trainer);
+	}
+	
 	// Add trainer to a subscription id
-	@PostMapping("/add/subscription/{subscriptionId}")
+	@PostMapping("/add")
 	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable int subscriptionId){
 		boolean isRequired = true;
 		if(theTrainer.getEmail()!=null) {
@@ -75,7 +76,7 @@ public class TrainerController {
 		}
 		validator.validateName(theTrainer.getName());
 		validator.validatePassword(theTrainer.getPassword());
-		theTrainer.setSubscription(new Subscription(subscriptionId));
+		theTrainer.setSubscription(new Subscription(1));
 		service.addTrainer(theTrainer);
 	}
 	

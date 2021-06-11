@@ -57,10 +57,6 @@ public class StudentController {
 		return service.getStudentBySubscriptionId(subscriptionId);
 	}
 	
-	
-	
-	
-	
 	@PostMapping("/add")
 	void addStudent(@RequestBody Student theStudent) {
 		boolean isRequired = true;
