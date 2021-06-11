@@ -19,4 +19,8 @@ public class EurekaDiscoveryServerApplication {
 		return new RestTemplate();
 	}
 	
+	
 }
+
+
+

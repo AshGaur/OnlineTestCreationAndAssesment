@@ -1,6 +1,7 @@
 package com.testcreation.students.controller;
 
 import java.beans.IntrospectionException;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -24,6 +25,7 @@ import com.testcreation.students.exception.StringValidators;
 import com.testcreation.students.exception.StudentException;
 import com.testcreation.students.exception.ValidationException;
 import com.testcreation.students.service.StudentService;
+//import com.testcreation.trainer.bean.Trainer;
 
 @RestController
 @RequestMapping("/students")
@@ -56,6 +58,15 @@ public class StudentController {
 		}
 		return service.getStudentBySubscriptionId(subscriptionId);
 	}
+	
+	
+	//Get a new subscription
+		@PutMapping("/{id}/subscription/{subscriptionId}")
+		void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
+			Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
+			student.setSubscription(new Subscription(subscriptionId));
+			service.updateStudent( student);
+		}
 	
 	@PostMapping("/add")
 	void addStudent(@RequestBody Student theStudent) {
