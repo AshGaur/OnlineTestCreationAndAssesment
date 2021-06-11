@@ -29,7 +29,7 @@ public class TrainerController {
 	@Autowired
 	StringValidators validator;
 	
-	// Get all trainers by trainer id
+	// Get all trainers
 	@GetMapping("/all")
 	Iterable<Trainer> getAllTrainers() {
 		return service.getAllTrainers();
@@ -51,7 +51,7 @@ public class TrainerController {
 		return service.getTrainerBySubscriptionId(subscriptionId);
 	}
 	
-	//Get a new subscription
+	//Get a new subscription (update subscription id for trainer)
 	@PutMapping("/{id}/subscription/{subscriptionId}")
 	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
 		Trainer trainer = !service.getTrainerById(id).isEmpty()?service.getTrainerById(id).get():null;
