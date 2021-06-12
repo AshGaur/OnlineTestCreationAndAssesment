@@ -1,6 +1,7 @@
 package com.testcreation.router.controller;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class SubscriptionRouterController {
 	SubscriptionRouterService service;
 	
 	@GetMapping("/all")
-	public Iterable<Subscription> getAllSubscription() {
+	public List<Object> getAllSubscription() {
 		return service.getAllSubscription();
 	}
 	
 	@GetMapping("/{id}")
-	public Optional<Subscription> getSubscriptionById(@PathVariable Integer id) {
+	public Object getSubscriptionById(@PathVariable Integer id) {
 //		if(service.getSubscriptionById(id).isEmpty())
 //			throw new SubscriptionException("Subscription ID doesn't exist !");
 		return service.getSubscriptionById(id);
