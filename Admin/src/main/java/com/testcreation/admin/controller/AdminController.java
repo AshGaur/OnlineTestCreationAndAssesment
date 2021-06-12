@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.admin.bean.Admin;
@@ -39,6 +40,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/add")
+//	@RequestMapping(value="/add", method = RequestMethod.POST, headers = "Accept=text/plain")
 	public String addAdmin(@RequestBody Admin theAdmin) {
 		validator.validateEmail(theAdmin.getEmail());
 		validator.validatePassword(theAdmin.getPassword());

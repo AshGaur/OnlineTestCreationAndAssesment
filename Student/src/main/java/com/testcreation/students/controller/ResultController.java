@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testcreation.students.bean.Result;
 import com.testcreation.students.bean.Student;
 import com.testcreation.students.bean.Test;
+import com.testcreation.students.dto.ResultDto;
 import com.testcreation.students.exception.StudentException;
 import com.testcreation.students.service.ResultService;
 
@@ -46,12 +47,19 @@ public class ResultController {
 		return service.getResultsByStudentId(studentId);
 	}
 	
-	@PostMapping("/add/studentId/{studentId}/testId/{testId}")
-	void addResult(@RequestBody Result theResult,@PathVariable Integer studentId,@PathVariable Integer testId) {
-		theResult.setStudent(new Student(studentId));
-		theResult.setTest(new Test(testId));
-		service.addResult(theResult);	
+	@PostMapping("/add")
+	void addResult(@RequestBody ResultDto resultDto) {
+//		theResult.setStudent(new Student(studentId));
+//		theResult.setTest(new Test(testId));
+		service.addResult(new Result(resultDto.getScore(),resultDto.getNumberOfAttempts(),resultDto.getStudentId(),resultDto.getTestId()));	
 	}
+	
+//	@PostMapping("/add/studentId/{studentId}/testId/{testId}")
+//	void addResult(@RequestBody Result theResult,@PathVariable Integer studentId,@PathVariable Integer testId) {
+//		theResult.setStudent(new Student(studentId));
+//		theResult.setTest(new Test(testId));
+//		service.addResult(theResult);	
+//	}
 	
 	@PutMapping("/update/{id}")
 	void updateResult(@RequestBody Result theResult,@PathVariable Integer id) {

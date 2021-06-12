@@ -61,7 +61,7 @@ public class TrainerController {
 	
 	// Add trainer to a subscription id
 	@PostMapping("/add")
-	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable int subscriptionId){
+	void addTrainer(@RequestBody Trainer theTrainer ){//, @PathVariable int subscriptionId){
 		boolean isRequired = true;
 		if(theTrainer.getEmail()!=null) {
 			validator.validateEmail(theTrainer.getEmail());

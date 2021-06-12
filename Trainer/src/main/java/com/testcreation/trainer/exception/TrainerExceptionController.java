@@ -1,5 +1,6 @@
 package com.testcreation.trainer.exception;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.id.IdentifierGenerationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,18 +17,23 @@ public class TrainerExceptionController {
 			return new ResponseEntity<>(theException.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 		
-		// if student/trainer give details i.e. already present in database
-		// can't create a new account with already existing phone/email 
-		@ExceptionHandler(value = DataIntegrityViolationException.class)
-		public ResponseEntity<Object> exception(DataIntegrityViolationException e){
-			return new ResponseEntity<>("Contraint not followed: "+e.getMessage(),HttpStatus.BAD_REQUEST);
+		@ExceptionHandler(value = ConstraintViolationException.class)
+		public ResponseEntity<Object> exception( ConstraintViolationException e){
+			return new ResponseEntity<>("Constraint not followed :"+e.getSQLException(),HttpStatus.BAD_REQUEST);
 		}
 		
-		// if primary key is not auto incremented and user give value null
-		@ExceptionHandler(value= IdentifierGenerationException.class)
-		public ResponseEntity<Object> exception(IdentifierGenerationException e){
-			return new ResponseEntity<>("Id can not be null",HttpStatus.BAD_REQUEST);
-		}
+//		// if student/trainer give details i.e. already present in database
+//		// can't create a new account with already existing phone/email 
+//		@ExceptionHandler(value = DataIntegrityViolationException.class)
+//		public ResponseEntity<Object> exception(DataIntegrityViolationException e){
+//			return new ResponseEntity<>("Contraint not followed: "+e.getMessage(),HttpStatus.BAD_REQUEST);
+//		}
+//		
+//		// if primary key is not auto incremented and user give value null
+//		@ExceptionHandler(value= IdentifierGenerationException.class)
+//		public ResponseEntity<Object> exception(IdentifierGenerationException e){
+//			return new ResponseEntity<>("Id can not be null",HttpStatus.BAD_REQUEST);
+//		}
 		
 //		// if any of them is null (questionString, answerString, subCategory,score) 
 //		@ExceptionHandler(value= NullPointerException.class)

@@ -23,8 +23,8 @@ public class CategoryRouterController {
 	public List<Object> getAllCategory(){
 		return service.getAllCategory();
 	}
-	@GetMapping("/{id}")
-	public Object getCategoryById(@PathVariable Integer id) {
-		 return service.getCategoryById(id);
-	}
+//	@GetMapping("/{id}")
+//	public Object getCategoryById(@PathVariable Integer id) {
+//		 return service.getCategoryById(id);
+//	}
 }

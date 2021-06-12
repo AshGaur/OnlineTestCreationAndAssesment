@@ -27,7 +27,7 @@ public class Result {
 	
 	@Column(nullable = false)
 	private Double score=0.0;
-	private Integer attempts=1;
+	private Integer numberOfAttempts=1;
 	
 	@OneToOne
 	private Student student;
@@ -35,4 +35,14 @@ public class Result {
 	@OneToOne
 	private Test test;
 	
+	public Result(Integer resultId) {
+		this.id = resultId;
+	}
+	
+	public Result(Double score,Integer numberOfAttempts,Integer studentId,Integer testId) {
+		this.score = score;
+		this.numberOfAttempts = numberOfAttempts;
+		this.student = new Student(studentId);
+		this.test = new Test(testId);
+	}
 }

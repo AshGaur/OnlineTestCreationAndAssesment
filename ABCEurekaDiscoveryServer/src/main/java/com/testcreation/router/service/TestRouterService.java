@@ -12,12 +12,10 @@ public class TestRouterService {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	
 	public List<Object> getAllTests() {
 		String url = "http://localhost:8082/tests/all";
 		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
 	}
-
 
 	public Object getTestById(Integer id) {
 		String url = "http://localhost:8082/tests/"+id.toString();
@@ -28,6 +26,7 @@ public class TestRouterService {
 		String url = "http://localhost:8082/tests/trainers/"+trainerId.toString();
 		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
 	}
+	
 	public List<Object> getTestsByCategoryName(String categoryName){
 		String url = "http://localhost:8082/tests/category/"+categoryName;
 		return  Arrays.asList(restTemplate.getForObject(url, Object[].class));

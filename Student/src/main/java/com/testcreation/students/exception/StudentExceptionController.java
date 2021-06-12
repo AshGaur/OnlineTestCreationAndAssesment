@@ -1,6 +1,7 @@
 package com.testcreation.students.exception;
 
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 
@@ -18,10 +19,15 @@ public class StudentExceptionController {
 		return new ResponseEntity<>(theException.getMessage(),HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(value = DataIntegrityViolationException.class)
-	public ResponseEntity<Object> exception(DataIntegrityViolationException theException){
-		return new ResponseEntity<>("Constraint Not Followed :"+theException.getMessage(),HttpStatus.BAD_REQUEST);
+	@ExceptionHandler(value = ConstraintViolationException.class)
+	public ResponseEntity<Object> exception( ConstraintViolationException e){
+		return new ResponseEntity<>("Constraint not followed :"+e.getSQLException(),HttpStatus.BAD_REQUEST);
 	}
+	
+//	@ExceptionHandler(value = DataIntegrityViolationException.class)
+//	public ResponseEntity<Object> exception(DataIntegrityViolationException theException){
+//		return new ResponseEntity<>("Constraint Not Followed :"+theException.getMessage(),HttpStatus.BAD_REQUEST);
+//	}
 
 	@ExceptionHandler(value = StudentException.class)
 	public ResponseEntity<Object> exception(StudentException e){

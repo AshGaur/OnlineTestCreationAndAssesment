@@ -21,8 +21,8 @@ public class CategoryRouterService {
 		String url="http://localhost:8080/Category/all";
 		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
 	}
-     public Object getCategoryById(Integer id) {
-		String url="http://localhost:8080/Category/"+id.toString();
-		return restTemplate.getForObject(url,Object.class);
-	}
+//     public Object getCategoryById(Integer id) {
+//		String url="http://localhost:8080/Category/"+id.toString();
+//		return restTemplate.getForObject(url,Object.class);
+//	}
 }

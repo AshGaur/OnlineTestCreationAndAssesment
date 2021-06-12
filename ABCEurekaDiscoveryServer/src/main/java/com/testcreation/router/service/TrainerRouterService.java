@@ -25,7 +25,7 @@ public class TrainerRouterService {
 	}
 	
 	public List<Object> getTrainerBySubscriptionId(Integer subscriptionId) {
-		String url = "http://localhost:8082/trainers/subscriptions"+subscriptionId.toString();
+		String url = "http://localhost:8082/trainers/subscription/"+subscriptionId.toString();
 		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
 	}
 }
