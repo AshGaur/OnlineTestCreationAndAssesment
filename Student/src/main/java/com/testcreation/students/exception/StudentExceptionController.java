@@ -33,4 +33,9 @@ public class StudentExceptionController {
 	public ResponseEntity<Object> exception(StudentException e){
 		return new ResponseEntity<Object>(e.getMessage(),HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(value = AttemptException.class)
+	public ResponseEntity<Object> exception(AttemptException e){
+		return new ResponseEntity<Object>(e.getMessage(),HttpStatus.BAD_REQUEST);
+	}
 }

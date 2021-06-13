@@ -40,7 +40,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/add")
-//	@RequestMapping(value="/add", method = RequestMethod.POST, headers = "Accept=text/plain")
+//	@RequestMapping(value="/add", method = RequestMethod.POST, headers = "Accept=application/json")
 	public String addAdmin(@RequestBody Admin theAdmin) {
 		validator.validateEmail(theAdmin.getEmail());
 		validator.validatePassword(theAdmin.getPassword());

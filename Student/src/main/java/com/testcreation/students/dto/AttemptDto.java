@@ -1,7 +1,9 @@
 package com.testcreation.students.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class AttemptDto {
 
@@ -9,4 +11,5 @@ public class AttemptDto {
 	
 	Integer questionId;
 	
+	String attemptString;
 }

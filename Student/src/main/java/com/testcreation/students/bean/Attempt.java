@@ -9,6 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Attempt {
 
@@ -26,8 +35,10 @@ public class Attempt {
 	
 	String attemptString;
 	
-	public Attempt(Integer resultId,Integer questionId) {
+	public Attempt(Integer resultId,Integer questionId,Boolean correct,String attemptString) {
 		this.resultList.add(new Result(resultId));
 		this.questionList.add(new Question(questionId));
+		this.correct = correct;
+		this.attemptString = attemptString;
 	}
 }
