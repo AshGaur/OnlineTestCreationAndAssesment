@@ -41,10 +41,10 @@ public class SubscriptionRouterController {
 		return service.getSubscriptionById(id);
 	}
 //	
-//	@PostMapping("/add")
-//	void addSubscription(@RequestBody Subscription theSubscription){
-//		service.addSubscription(theSubscription);
-//	}
+	@PostMapping("/add")
+	void addSubscription(@RequestBody String theSubscription){
+		service.addSubscription(theSubscription);
+	}
 //	
 //	@PutMapping("/update/{id}")
 //	void updateTrainer(@RequestBody Subscription theSubscription, @PathVariable Integer id) {
