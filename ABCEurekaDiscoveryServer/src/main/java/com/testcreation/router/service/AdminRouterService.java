@@ -34,14 +34,14 @@ public class AdminRouterService {
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
 	
-	public List<Object> getAllAdmins() {
+	public List<Admin> getAllAdmins() {
 		String url = "http://localhost:8080/admins/all";
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return Arrays.asList(restTemplate.getForObject(url, Admin[].class));
 	}
 
-	public Object getAdminById(Integer id) {
+	public Admin getAdminById(Integer id) {
 		String url = "http://localhost:8080/admins/"+id.toString();
-		return restTemplate.getForObject(url, Object.class);
+		return restTemplate.getForObject(url, Admin.class);
 	}
 	
 }

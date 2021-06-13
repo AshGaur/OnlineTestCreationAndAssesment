@@ -11,7 +11,7 @@ public class Admin {
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 //	@Column(updatable = false)
-//	Integer id;
+	Integer id;
 	
 //	@Column(unique=true,nullable=false)
 	String email;

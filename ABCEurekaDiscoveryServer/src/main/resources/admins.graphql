@@ -1,0 +1,14 @@
+schema{
+	query: Query
+}
+
+type Query{
+	allAdmins: [Admin]
+	admin(id:Int): Admin
+}
+
+type Admin{
+	id: Int
+	email: String
+	password: String
+}

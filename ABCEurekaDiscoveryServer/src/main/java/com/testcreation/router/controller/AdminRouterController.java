@@ -2,6 +2,7 @@ package com.testcreation.router.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.router.bean.Admin;
+import com.testcreation.router.graphql.GraphQLService;
 import com.testcreation.router.service.AdminRouterService;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/admins")
@@ -21,13 +25,22 @@ public class AdminRouterController {
 	@Autowired
 	AdminRouterService service;
 	
+	@Autowired
+	GraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
+	
 	@GetMapping("/all")
-	List<Object> getAllAdmins() {
+	List<Admin> getAllAdmins() {
 		return service.getAllAdmins();
 	}
 //	
 	@GetMapping("/{id}")
-	Object getAdminById(@PathVariable Integer id){
+	Admin getAdminById(@PathVariable Integer id){
 		return service.getAdminById(id);
 	}
 	
