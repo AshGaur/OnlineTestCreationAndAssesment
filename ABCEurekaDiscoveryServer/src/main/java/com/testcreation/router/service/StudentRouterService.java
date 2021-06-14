@@ -26,9 +26,9 @@ public class StudentRouterService {
 		return restTemplate.getForObject(url, Object.class);
 	}
 	
-	public Object getStudentBySubscriptionId(Integer subscriptionId) {
+	public List<Object> getStudentBySubscriptionId(Integer subscriptionId) {
 		String url = "http://localhost:8081/students/subscriptions"+subscriptionId.toString();
-		return restTemplate.getForObject(url, Object.class);
+		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
 	}
 }
 

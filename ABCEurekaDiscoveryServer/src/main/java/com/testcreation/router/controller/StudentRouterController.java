@@ -51,7 +51,7 @@ public class StudentRouterController {
 
 //
 	@GetMapping("/subscription/{subscriptionId}")
-	Object getStudentBySubscriptionId(@PathVariable Integer subscriptionId){
+	List<Object> getStudentBySubscriptionId(@PathVariable Integer subscriptionId){
   return service.getStudentBySubscriptionId(subscriptionId);
 	}
 //	
