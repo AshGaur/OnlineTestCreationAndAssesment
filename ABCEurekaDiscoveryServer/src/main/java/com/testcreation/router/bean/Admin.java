@@ -1,4 +1,5 @@
 package com.testcreation.router.bean;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -6,6 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 //@Entity(name="admins")
 public class Admin {
 //	@Id
