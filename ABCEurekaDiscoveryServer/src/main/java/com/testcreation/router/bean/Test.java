@@ -44,10 +44,10 @@ public class Test {
 	private Integer duration;	//minutes
 	
 //	@ManyToOne
-//	private Trainer trainer;
+	private Trainer trainer;
 	
 //	@ManyToOne
-//	private Category category;
+	private Category category;
 	
 	public Test(Integer testId) {
 		this.id = testId;

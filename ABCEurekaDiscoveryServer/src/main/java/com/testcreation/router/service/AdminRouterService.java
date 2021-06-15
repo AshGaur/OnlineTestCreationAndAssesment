@@ -40,7 +40,6 @@ public class AdminRouterService {
 		String url = "http://localhost:8080/admins/all";
 		return Arrays.asList(restTemplate.getForObject(url, Admin[].class));
 	}
-
 	
 	public List<Admin> saveAdmins(){
 		return Arrays.asList(new Admin(-1,"Admin Service will return in sometime","Service Unavailable"));

@@ -52,7 +52,7 @@ public class AdminRouterController {
 //	@PutMapping("/update/{id}")
 //	void updateAdmin(@RequestBody Admin theAdmin,@PathVariable Integer id) {
 //		if(service.getAdminById(id).isEmpty())
-//			throw new AdminException("Admin doesn't exist with ID provied !");
+//			throw new AdminException("Admin doesn't exist with ID provided !");
 //		service.updateAdmin(theAdmin);
 //	}
 //	

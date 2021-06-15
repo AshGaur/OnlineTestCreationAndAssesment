@@ -23,7 +23,7 @@ public Subscription(int i, String string, String string2) {
 
 	//	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private Integer id;
+	private Integer id;
 //	@Column(nullable=false)
 	private String code;
 	

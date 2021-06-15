@@ -48,7 +48,7 @@ public class Question {
 	private double negativeMarking=0;
 	
 //	@ManyToOne
-//	private Test test;
+	private Test test;
 	
 	
 }

@@ -1,0 +1,29 @@
+schema{
+	query: Query
+}
+
+type Query{
+	allTrainers: [Trainer]
+	trainer(id:Int): Trainer
+}
+
+type Trainer{
+	id: Int
+	name: String
+	email: String
+	password: String
+	phone: String
+	subscription: Subscription
+}
+
+
+type Subscription{
+	id: Int
+	code: String
+	role: String
+	description: String
+	testCreationLimit: Int
+	testAvailability: Int
+	serviceUsageLimit: Int
+	price: 
+}
