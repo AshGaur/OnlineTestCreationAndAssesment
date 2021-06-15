@@ -79,7 +79,7 @@ public class StudentRouterController {
 	
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> addStudents(@RequestBody String theStudent, @PathVariable int subscriptionId) {
+	public ResponseEntity<String> addStudents(@RequestBody String theStudent) {
 		return service.addStudent(theStudent);
 	}
 
