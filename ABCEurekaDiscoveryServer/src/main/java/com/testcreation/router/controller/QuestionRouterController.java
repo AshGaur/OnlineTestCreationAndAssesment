@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.testcreation.router.bean.Test;
 import com.testcreation.router.service.QuestionRouterService;
 //import com.testcreation.trainer.bean.Question;
 //import com.testcreation.trainer.bean.Test;
@@ -38,10 +40,14 @@ public class QuestionRouterController {
 	Object getQuestionById(@PathVariable Integer questionId) {
 		return questionService.getQuestionById(questionId);
 	}
+	@PostMapping("/add/test/{testId}")
+	public ResponseEntity<String>addNewQuestion(@RequestBody String tempQuestion, @PathVariable Integer testId) {
+		return questionService.addNewQuestion(tempQuestion,testId);
+	}
 	
 	//Add Question to a test ID
 //	@PostMapping("/add/test/{testId}")
-//	void addNewQuestion(@RequestBody Question tempQuestion, @PathVariable Integer testId) {
+//	void addNewQuestion(@RequestBody Question tempQuestion, @PathVariable Test testId) {
 //		tempQuestion.setTest(new Test(testId));
 //		switch(tempQuestion.getQuestionType()) {
 //			case "one-answer-type" : {
