@@ -30,8 +30,8 @@ public class SubscriptionRouterController {
 	SubscriptionRouterService service;
 	
 	@GetMapping("/all")
-	public List<Object> getAllSubscription() {
-		return service.getAllSubscription();
+	public List<Subscription> getAllSubscription() {
+		return service.getAllSubcription();
 	}
 	
 	@GetMapping("/{id}")

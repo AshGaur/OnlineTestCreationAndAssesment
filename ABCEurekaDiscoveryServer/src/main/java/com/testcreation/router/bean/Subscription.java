@@ -17,7 +17,11 @@ import lombok.Setter;
 @Setter
 //@Entity(name="subscriptions")
 public class Subscription {
-//	@Id
+public Subscription(int i, String string, String string2) {
+		
+	}
+
+	//	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 //	private Integer id;
 //	@Column(nullable=false)
