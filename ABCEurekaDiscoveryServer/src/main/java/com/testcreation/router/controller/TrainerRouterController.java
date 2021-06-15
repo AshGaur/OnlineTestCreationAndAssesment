@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,25 +54,10 @@ public class TrainerRouterController {
 //	}
 //	
 //	// Add trainer to a subscription id
-//	@PostMapping("/add")
-//	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable int subscriptionId){
-//		boolean isRequired = true;
-//		if(theTrainer.getEmail()!=null) {
-//			validator.validateEmail(theTrainer.getEmail());
-//			isRequired = false;
-//		}
-//		if(theTrainer.getPhone()!=null) {
-//			validator.validatePhone(theTrainer.getPhone());
-//			isRequired = false;
-//		}
-//		if(isRequired) {
-//			throw new TrainerException("Atleast one among phone or email is required !");
-//		}
-//		validator.validateName(theTrainer.getName());
-//		validator.validatePassword(theTrainer.getPassword());
-//		theTrainer.setSubscription(new Subscription(1));
-//		service.addTrainer(theTrainer);
-//	}
+	@PostMapping("/add")
+	public ResponseEntity<String> addTrainer(@RequestBody String theTrainer , @PathVariable int subscriptionId){
+		return service.addTrainer(theTrainer);
+	}
 //	
 //	@PutMapping("/update/{id}")
 //	void updateTrainer(@RequestBody Trainer theTrainer, @PathVariable Integer id) {
