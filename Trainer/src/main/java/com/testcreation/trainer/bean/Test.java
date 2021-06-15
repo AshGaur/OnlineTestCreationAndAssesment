@@ -1,7 +1,5 @@
 package com.testcreation.trainer.bean;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,18 +25,16 @@ public class Test {
 	
 	private String specialInstructions;
 	
-	private Date fromDate;
 	@Column(nullable = false)
 	private String fromDateString;
 	
-	private Date toDate;
 	@Column(nullable = false)
 	private String toDateString;
 	
 	@Column(nullable = false)
 	private String title;
 	
-	private Integer maxMarks;
+	private Double maxMarks;
 	
 	@Column(nullable = false)
 	private Integer duration;	//minutes

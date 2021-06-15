@@ -1,14 +1,14 @@
 schema{
-	query: Query
+	query:Query
 }
 
 type Query{
-	allTrainers: [Trainer]
-	trainers(subId:Int): [Trainer]
-	trainer(id:Int): Trainer
+	allStudents: [Student]
+	student(id:Int): Student
+	students(subId:Int): [Student]
 }
 
-type Trainer{
+type Student{
 	id: Int
 	name: String
 	email: String
@@ -16,7 +16,6 @@ type Trainer{
 	phone: String
 	subscription: Subscription
 }
-
 
 type Subscription{
 	id: Int

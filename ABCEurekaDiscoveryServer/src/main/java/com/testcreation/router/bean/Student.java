@@ -23,7 +23,7 @@ public class Student {
 //	@Id
 //	@GeneratedValue(strategy=GenerationType.IDENTITY)
 //	@Column(updatable = false)
-//	private Integer id;
+	private Integer id;
 	
 	private String name;
 	

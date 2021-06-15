@@ -43,11 +43,11 @@ public class StudentController {
 	}
 	
 	@GetMapping("/{id}")
-	Optional<Student> getStudentById(@PathVariable Integer id){
+	Student getStudentById(@PathVariable Integer id){
 		if(service.getStudentById(id).isEmpty()){
-			throw new StudentException("student id dosent exist");
+			throw new StudentException("student id doesn't exist");
 		}
-		return service.getStudentById(id);
+		return service.getStudentById(id).get();
 	}
 	
 

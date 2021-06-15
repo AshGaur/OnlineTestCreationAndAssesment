@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Admin;
-import com.testcreation.router.service.AdminRouterService;
+import com.testcreation.router.bean.Category;
+import com.testcreation.router.service.CategoryRouterService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -24,12 +23,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class GraphQLService {
+public class CategoryGraphQLService {
 
 	@Autowired
-	AdminRouterService adminRouterService;
+	CategoryRouterService categoryRouterService;
 	
-	@Value("classpath:admins.graphql")
+	@Value("classpath:categories.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -37,7 +36,6 @@ public class GraphQLService {
 	@PostConstruct
 	private void loadSchema() throws IOException {
 		File schemaFile = resource.getFile();
-		
 		TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
 		RuntimeWiring wiring = buildRuntimeWiring();
         GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
@@ -47,20 +45,12 @@ public class GraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-//                        .dataFetcher("allAdmins", new DataFetcher<List<Admin>>() {
-//							@Override
-//							public List<Admin> get(DataFetchingEnvironment environment) {
-//								return adminRouterService.getAllAdmins();
-//							}
-//						})
-                        .dataFetcher("allAdmins",(DataFetcher<List<Admin>>)(environment)-> adminRouterService.getAllAdmins())
-                        .dataFetcher("admin", (DataFetcher<Admin>)(environment)->adminRouterService.getAdminById(environment.getArgument("id")))
+                        .dataFetcher("allCategories",(DataFetcher<List<Category>>)(environment)-> categoryRouterService.getAllCategories())
                  )
                 .build();
     }
-
+	
 	public GraphQL getGraphQL() {
 		return graphQL;
 	}
-	
 }

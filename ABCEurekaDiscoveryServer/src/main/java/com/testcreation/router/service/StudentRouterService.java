@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.testcreation.router.bean.Student;
 import com.testcreation.router.service.StudentRouterService;
 @Service
 public class StudentRouterService {
@@ -23,20 +25,20 @@ public class StudentRouterService {
 	HttpHeaders headers;
 	
 	
-	public List<Object> getAllStudents() {
+	public List<Student> getAllStudents() {
 		String url = "http://localhost:8081/students/all";
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return Arrays.asList(restTemplate.getForObject(url, Student[].class));
 	}
 
 
-	public Object getStudentById(Integer id) {
+	public Student getStudentById(Integer id) {
 		String url = "http://localhost:8081/students/"+id.toString();
-		return restTemplate.getForObject(url, Object.class);
+		return restTemplate.getForObject(url, Student.class);
 	}
 	
-	public List<Object> getStudentBySubscriptionId(Integer subscriptionId) {
-		String url = "http://localhost:8081/students/subscriptions"+subscriptionId.toString();
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+	public List<Student> getStudentsBySubscriptionId(Integer subscriptionId) {
+		String url = "http://localhost:8081/students/subscription/"+subscriptionId.toString();
+		return Arrays.asList(restTemplate.getForObject(url, Student[].class));
 	}
 
 
@@ -46,7 +48,7 @@ public class StudentRouterService {
 		String url = "http://localhost:8080/students/add";
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
-	}
+}
 	
 	
 	

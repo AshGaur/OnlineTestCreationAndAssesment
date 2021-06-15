@@ -14,6 +14,7 @@ import com.testcreation.router.exception.RestTemplateResponseErrorHandler;
 
 @EnableEurekaServer
 @EnableCircuitBreaker
+//@EnableZuulProxy
 @SpringBootApplication
 public class EurekaDiscoveryServerApplication {
 

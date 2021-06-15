@@ -1,23 +1,18 @@
 package com.testcreation.router.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.testcreation.router.graphql.TestGraphQLService;
 import com.testcreation.router.service.TestRouterService;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/tests")
@@ -26,47 +21,20 @@ public class TestRouterController {
 	@Autowired
 	TestRouterService service;
 	
-	//SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+	@Autowired
+	TestGraphQLService graphQLService;
 	
-	@GetMapping("/all")
-	List<Object> getAllTests() {
-		return service.getAllTests();
-	}
-	
-	@GetMapping("/{testId}")
-	Object getTestByTestId(@PathVariable Integer testId) {
-		return service.getTestById(testId);
-	}
-	
-	@GetMapping("/trainer/{trainerId}")
-	List<Object> getTestsByTrainerId(@PathVariable Integer trainerId){
-		return service.getTestsByTrainerId(trainerId);
-	}
-	
-	@GetMapping("/category/{categoryName}")
-	List<Object> getTestsByCategoryName(@PathVariable String categoryName){
-		return service.getTestsByCategoryName(categoryName);
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
 	}
 	
 	@PostMapping("/add/trainer/{trainerId}/category/{categoryName}")
 	public ResponseEntity<String> addTest(@RequestBody String tempTest, @PathVariable Integer trainerId, @PathVariable String categoryName) {
 		return service.addTest(tempTest, trainerId, categoryName);
 	}
-//	
-//	@PostMapping("/add/trainer/{trainerId}/category/{categoryName}")
-//	void addTest(@RequestBody Test tempTest,@PathVariable Integer trainerId,@PathVariable String categoryName) throws ParseException  {
-//		tempTest.setTrainer(new Trainer(trainerId));
-//		tempTest.setCategory(new Category(categoryName));
-//		
-//		Date fromDate = formatter.parse(tempTest.getFromDateString());
-//		tempTest.setFromDate(fromDate);
-//		
-//		Date toDate   = formatter.parse(tempTest.getToDateString());
-//		tempTest.setToDate(toDate);
-//		
-//		service.addTest(tempTest);
-//	}
-//
+
 //	@PutMapping("/update/{testId}")
 //	void updateTest(@RequestBody Test tempTest, @PathVariable int testId) {
 //		if(service.getTestById(testId).isEmpty()) {

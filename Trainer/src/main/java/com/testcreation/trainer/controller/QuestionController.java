@@ -24,6 +24,11 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 
+	@GetMapping("/all")
+	Iterable<Question> getAllQuestions(){
+		return questionService.getAllQuestions();
+	}
+	
 	//Get All Questions by TestID
 	@GetMapping("/test/{testId}")
 	List<Question> getAllQuestionsByTestId(@PathVariable Integer testId) {
@@ -40,6 +45,11 @@ public class QuestionController {
 		return questionService.getQuestionById(questionId);
 	}
 	
+//	@GetMapping("/subCategory/{subCategory}/test/{testId}")
+//	public List<Question> getQuestionsBySubCategoryTestId(@PathVariable String subCategory,@PathVariable Integer testId){
+//		return questionService.getQuestionsBySubCategoryTestId(subCategory, testId);
+//	}
+
 	//Add Question to a test ID
 	@PostMapping("/add/test/{testId}")
 	void addNewQuestion(@RequestBody Question tempQuestion, @PathVariable Integer testId) {

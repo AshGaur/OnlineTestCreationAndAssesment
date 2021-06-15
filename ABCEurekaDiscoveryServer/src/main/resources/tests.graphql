@@ -1,0 +1,46 @@
+schema{
+	query: Query
+}
+
+type Query{
+	allTests: [Test]
+	test(id:Int): Test
+	tests(category:String): [Test]
+	testsByTrainer(id:Int): [Test]
+}
+
+type Test{
+	id: Int
+	specialInstructions: String
+	fromDateString: String
+	toDateString: String
+	title: String
+	maxMarks: Float
+	duration: Int
+	trainer: Trainer
+	category: Category
+}
+
+type Category{
+	categoryName: String
+}
+
+type Trainer{
+	id: Int
+	name: String
+	email: String
+	password: String
+	phone: String
+	subscription: Subscription
+}
+
+type Subscription{
+	id: Int
+	code: String
+	role: String
+	description: String
+	testCreationLimit: Int
+	testAvailability: Int
+	serviceUsageLimit: Int
+	price: Float
+}

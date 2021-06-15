@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.testcreation.router.bean.Trainer;
+
 @Service
 public class TrainerRouterService {
 	@Autowired
@@ -21,22 +23,21 @@ public class TrainerRouterService {
 	HttpHeaders headers;
 	
 	
-	public List<Object> getAllTrainers() {
+	public List<Trainer> getAllTrainers() {
 		String url = "http://localhost:8082/trainers/all";
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return Arrays.asList(restTemplate.getForObject(url, Trainer[].class));
 	}
 
 
-	public Object getTrainerById(Integer id) {
+	public Trainer getTrainerById(Integer id) {
 		String url = "http://localhost:8082/trainers/"+id.toString();
-		return restTemplate.getForObject(url, Object.class);
+		return restTemplate.getForObject(url, Trainer.class);
 	}
 	
-	public List<Object> getTrainerBySubscriptionId(Integer subscriptionId) {
+	public List<Trainer> getTrainersBySubscriptionId(Integer subscriptionId) {
 		String url = "http://localhost:8082/trainers/subscription/"+subscriptionId.toString();
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return Arrays.asList(restTemplate.getForObject(url, Trainer[].class));
 	}
-
 
 	public ResponseEntity<String> addTrainer(String Trainer) {
 		headers.setContentType(MediaType.APPLICATION_JSON);

@@ -60,10 +60,8 @@ public class TestController {
 		tempTest.setCategory(new Category(categoryName));
 		
 		Date fromDate = formatter.parse(tempTest.getFromDateString());
-		tempTest.setFromDate(fromDate);
 		
 		Date toDate   = formatter.parse(tempTest.getToDateString());
-		tempTest.setToDate(toDate);
 		
 		service.addTest(tempTest);
 	}

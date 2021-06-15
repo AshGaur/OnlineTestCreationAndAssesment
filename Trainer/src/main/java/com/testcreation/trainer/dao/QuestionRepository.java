@@ -16,6 +16,9 @@ import com.testcreation.trainer.bean.Question;
 public interface QuestionRepository extends CrudRepository<Question, Integer>{
 	List<Question> findByTestId(Integer testId);
 	
+//	@Query("select * from questions q where q.subCategory= :subCategory and q.test.id = :testId")
+//	List<Question> findBySubCategory(@Param(value = "subCategory")String subCategory, @Param(value="testId")Integer testId);
+	
 	@Modifying
 	@Query("delete from questions q where q.test.id = :testId")
 	void deleteByTestId(@Param(value = "testId") Integer testId);

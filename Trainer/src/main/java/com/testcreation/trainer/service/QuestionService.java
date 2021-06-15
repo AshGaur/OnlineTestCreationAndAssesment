@@ -15,6 +15,14 @@ public class QuestionService {
 	@Autowired
 	QuestionRepository questionRepo;
 	
+//	public List<Question> getQuestionsBySubCategoryTestId(String subCategory,Integer testId){
+//		return questionRepo.findBySubCategory(subCategory, testId);
+//	}
+	
+	public Iterable<Question> getAllQuestions(){
+		return questionRepo.findAll();
+	}
+	
 	public List<Question> getAllQuestionsByTestId(Integer testId) {
 		return questionRepo.findByTestId(testId);
 	}

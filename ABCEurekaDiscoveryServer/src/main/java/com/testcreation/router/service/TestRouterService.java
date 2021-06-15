@@ -1,8 +1,6 @@
 package com.testcreation.router.service;
 
-import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -11,12 +9,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
-
+import com.testcreation.router.bean.Test;
 
 @Service
 public class TestRouterService {
@@ -26,24 +21,24 @@ public class TestRouterService {
 	@Autowired
 	HttpHeaders headers;
 	
-	public List<Object> getAllTests() {
+	public List<Test> getAllTests() {
 		String url = "http://localhost:8082/tests/all";
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return Arrays.asList(restTemplate.getForObject(url, Test[].class));
 	}
 
-	public Object getTestById(Integer id) {
+	public Test getTestById(Integer id) {
 		String url = "http://localhost:8082/tests/"+id.toString();
-		return restTemplate.getForObject(url, Object.class);
+		return restTemplate.getForObject(url, Test.class);
 	}
 	
-	public List<Object> getTestsByTrainerId(Integer trainerId) {
-		String url = "http://localhost:8082/tests/trainers/"+trainerId.toString();
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+	public List<Test> getTestsByTrainerId(Integer trainerId) {
+		String url = "http://localhost:8082/tests/trainer/"+trainerId.toString();
+		return Arrays.asList(restTemplate.getForObject(url, Test[].class));
 	}
 	
-	public List<Object> getTestsByCategoryName(String categoryName){
+	public List<Test> getTestsByCategoryName(String categoryName){
 		String url = "http://localhost:8082/tests/category/"+categoryName;
-		return  Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return  Arrays.asList(restTemplate.getForObject(url, Test[].class));
 	}
 	
 	public ResponseEntity<String> addTest(String tempTest, Integer trainerId, String categoryName) {

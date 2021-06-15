@@ -1,39 +1,17 @@
 package com.testcreation.router.controller;
 
-import java.beans.IntrospectionException;
-
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.testcreation.router.graphql.GraphQLService;
+import com.testcreation.router.graphql.StudentGraphQLService;
 import com.testcreation.router.service.StudentRouterService;
 
 import graphql.ExecutionResult;
-
-//import com.testcreation.students.bean.Student;
-//import com.testcreation.students.bean.Subscription;
-//import com.testcreation.students.exception.StringValidators;
-//import com.testcreation.students.exception.StudentException;
-//import com.testcreation.students.exception.ValidationException;
-//import com.testcreation.students.service.StudentService;
-//import com.testcreation.trainer.bean.Trainer;
 
 @RestController
 @RequestMapping("/students")
@@ -43,7 +21,7 @@ public class StudentRouterController {
 	StudentRouterService service;
 	
 	@Autowired
-	GraphQLService graphQLService;
+	StudentGraphQLService graphQLService;
 	
 	@PostMapping
 	public ResponseEntity<Object> getAllQLStudents(@RequestBody String query){
@@ -51,22 +29,10 @@ public class StudentRouterController {
 		return new ResponseEntity<>(executionResult,HttpStatus.OK);
 	}
 	
-	@GetMapping("/all")
-	List<Object> getAllStudents() {
-		return service.getAllStudents();
+	@PostMapping("/add")
+	public ResponseEntity<String> addStudents(@RequestBody String theStudent) {
+		return service.addStudent(theStudent);
 	}
-	
-	@GetMapping("/{id}")
-	Object getStudentById(@PathVariable Integer id){
-		return service.getStudentById(id);
-	}
-
-//
-	@GetMapping("/subscription/{subscriptionId}")
-	List<Object> getStudentBySubscriptionId(@PathVariable Integer subscriptionId){
-  return service.getStudentBySubscriptionId(subscriptionId);
-	}
-//	
 	
 //	//Get a new subscription
 //		@PutMapping("/{id}/subscription/{subscriptionId}")
@@ -76,14 +42,7 @@ public class StudentRouterController {
 //			service.updateStudent( student);
 //		}
 //	
-	
-	
-	@PostMapping("/add")
-	public ResponseEntity<String> addStudents(@RequestBody String theStudent) {
-		return service.addStudent(theStudent);
-	}
 
-//	
 //	@PutMapping("/update/{id}")
 //	void updateStudent(@RequestBody Student theStudent,@PathVariable int id) throws IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {
 //		Optional<Student> dbStudent = service.getStudentById(id);
