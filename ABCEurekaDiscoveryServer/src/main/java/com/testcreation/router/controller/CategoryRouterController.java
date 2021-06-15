@@ -23,16 +23,16 @@ public class CategoryRouterController {
 	CategoryRouterService service;
 	
 	@GetMapping("/all")
-	public List<Object> getAllCategory(){
+	public List<Category> getAllCategory(){
 		return service.getAllCategory();
 	}
-//	@GetMapping("/{id}")
-//	public Object getCategoryById(@PathVariable Integer id) {
-//		 return service.getCategoryById(id);
-//	}
+	@GetMapping("/{id}")
+	public Object getCategoryById(@PathVariable Integer id) {
+		 return service.getCategoryById(id);
+	}
 	@PostMapping("/add")
-    public ResponseEntity<String> addCategory(@RequestBody String category) {
-		return service.addCategory(category);
+    public void addCategory(@RequestBody String category) {
+		 service.addCategory(category);
 	}
 	
 }

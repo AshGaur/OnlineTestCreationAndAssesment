@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.testcreation.router.graphql.GraphQLService;
 import com.testcreation.router.service.StudentRouterService;
+
+import graphql.ExecutionResult;
 
 //import com.testcreation.students.bean.Student;
 //import com.testcreation.students.bean.Subscription;
@@ -37,7 +42,14 @@ public class StudentRouterController {
 	@Autowired
 	StudentRouterService service;
 	
-
+	@Autowired
+	GraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLStudents(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
 	
 	@GetMapping("/all")
 	List<Object> getAllStudents() {
@@ -64,25 +76,13 @@ public class StudentRouterController {
 //			service.updateStudent( student);
 //		}
 //	
-//	@PostMapping("/add")
-//	void addStudent(@RequestBody Student theStudent) {
-//		boolean isRequired = true;
-//		if(theStudent.getEmail()!=null) {
-//			validator.validateEmail(theStudent.getEmail());
-//			isRequired = false;
-//		}
-//		if(theStudent.getPhone()!=null) {
-//			validator.validatePhone(theStudent.getPhone());
-//			isRequired = false;
-//		}
-//		if(isRequired) {
-//			throw new StudentException("Atleast one among phone or email is required !");
-//		}
-//		validator.validateName(theStudent.getName());
-//		validator.validatePassword(theStudent.getPassword());
-//		theStudent.setSubscription(new Subscription(1));
-//		service.addStudent(theStudent);
-//	}
+	
+	
+	@PostMapping("/add")
+	public ResponseEntity<String> addStudents(@RequestBody String theStudent, @PathVariable int subscriptionId) {
+		return service.addStudent(theStudent);
+	}
+
 //	
 //	@PutMapping("/update/{id}")
 //	void updateStudent(@RequestBody Student theStudent,@PathVariable int id) throws IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {

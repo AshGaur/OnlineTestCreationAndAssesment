@@ -16,8 +16,8 @@ public class Category {
 //	@Id
 	String categoryName;
 	
-	public Category(String categoryName) {
-		this.categoryName = categoryName;
+	public Category(int i,String categoryName) {
+		//this.categoryName = categoryName;
 	}
 	
 }

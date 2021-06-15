@@ -36,7 +36,7 @@ public class Student {
 	private String phone;
 	
 //	@ManyToOne
-//	Subscription subscription;
+	Subscription subscription;
 //	
 //	public Student(Integer studentId){
 //		this.id = studentId;
