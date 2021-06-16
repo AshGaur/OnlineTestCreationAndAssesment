@@ -54,14 +54,17 @@ public class TrainerController {
 	//Get a new subscription (update subscription id for trainer)
 	@PutMapping("/{id}/subscription/{subscriptionId}")
 	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
-		Trainer trainer = !service.getTrainerById(id).isEmpty()?service.getTrainerById(id).get():null;
+		Trainer trainer = service.getTrainerById(id).isPresent()?service.getTrainerById(id).get():null;
+		if(trainer == null) {
+			throw new TrainerException("Unknown Trainer Id !");
+		}
 		trainer.setSubscription(new Subscription(subscriptionId));
 		service.updateTrainer(trainer);
 	}
 	
 	// Add trainer to a subscription id
-	@PostMapping("/add")
-	void addTrainer(@RequestBody Trainer theTrainer ){//, @PathVariable int subscriptionId){
+	@PostMapping("/add/subscription/{subscriptionId}")
+	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable Integer subscriptionId){//, @PathVariable int subscriptionId){
 		boolean isRequired = true;
 		if(theTrainer.getEmail()!=null) {
 			validator.validateEmail(theTrainer.getEmail());
@@ -76,7 +79,12 @@ public class TrainerController {
 		}
 		validator.validateName(theTrainer.getName());
 		validator.validatePassword(theTrainer.getPassword());
-		theTrainer.setSubscription(new Subscription(1));
+		boolean paymentSuccessful = true;
+		if(subscriptionId!=1 && paymentSuccessful) {
+			theTrainer.setSubscription(new Subscription(subscriptionId));
+		}else {
+			theTrainer.setSubscription(new Subscription(1));
+		}
 		service.addTrainer(theTrainer);
 	}
 	

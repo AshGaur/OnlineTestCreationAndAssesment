@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,9 +39,22 @@ public class AttemptController {
 		service.addAttempt(new Attempt(attemptDto.getResultId(),attemptDto.getQuestionId(),correct,attemptDto.getAttemptString()));
 	}
 	
+//	@PutMapping("/attempt/{attemptId}")
+//	public void updateAttempt(@PathVariable Integer attemptId) {
+//		Attempt attempt = service.getAttemptById(attemptId).isPresent()?service.getAttemptById(attemptId).get():null;
+//		if(attempt==null) {
+//			throw new AttemptException("Unknown AttemptId !");
+//		}
+//	}
+	
 	@GetMapping("/all")
 	public Iterable<Attempt> getAllAttempts(){
 		return service.getAllAttempts();
+	}
+	
+	@GetMapping("/result/{resultId}/question/{questionId}")
+	public List<Attempt> getAttemptsByResultIdAndQuestionId(@PathVariable Integer resultId,@PathVariable Integer questionId){
+		return service.getAttemptsByResultIdAndQuestionId(resultId,questionId);
 	}
 	
 	@GetMapping("/result/{resultId}")

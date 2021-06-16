@@ -34,7 +34,7 @@ public class Test {
 	@Column(nullable = false)
 	private String title;
 	
-	private Double maxMarks;
+	private Double maxMarks=0.0;
 	
 	@Column(nullable = false)
 	private Integer duration;	//minutes

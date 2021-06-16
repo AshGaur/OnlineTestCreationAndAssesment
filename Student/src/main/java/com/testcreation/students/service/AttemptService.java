@@ -36,6 +36,10 @@ public class AttemptService {
 		return repo.findAll();
 	}
 	
+	public List<Attempt> getAttemptsByResultIdAndQuestionId(Integer resultId,Integer questionId){
+		return repo.findByResultListIdAndQuestionListId(resultId,questionId);
+	}
+	
 	public List<Attempt> getAttemptsByResultId(Integer resultId){
 		return repo.findByResultListId(resultId);
 	}

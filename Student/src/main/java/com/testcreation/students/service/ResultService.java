@@ -38,11 +38,15 @@ public class ResultService {
 		repo.deleteById(id);	
 	}
 
-	//Get Results By Student ID after mapping student
+	//Get Results By Student ID
 	public List<Result> getResultsByStudentId(Integer studentId) {
 		return repo.findByStudentId(studentId);
 	}
 
+	//Get Results By StudentId and TestId
+	public List<Result> getResultsByStudentIdAndTestId(Integer studentId,Integer testId){
+		return repo.findByStudentIdAndTestId(studentId,testId);
+	}
 	
 }
 

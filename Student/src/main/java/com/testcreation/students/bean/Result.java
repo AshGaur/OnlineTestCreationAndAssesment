@@ -29,6 +29,10 @@ public class Result {
 	private Double score=0.0;
 	private Integer numberOfAttempts=1;
 	
+	private Boolean completed=false;
+	
+	private String endString;
+	
 	@OneToOne
 	private Student student;
 

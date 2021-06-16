@@ -10,4 +10,6 @@ public interface AttemptRepository extends CrudRepository<Attempt, Integer> {
 
 	List<Attempt> findByResultListId(Integer resultId);
 
+	List<Attempt> findByResultListIdAndQuestionListId(Integer resultId, Integer questionId);
+
 }

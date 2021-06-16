@@ -9,4 +9,6 @@ import com.testcreation.students.bean.Result;
 public interface ResultRepository extends CrudRepository<Result, Integer> {
 
 	List<Result> findByStudentId(Integer studentId);
+
+	List<Result> findByStudentIdAndTestId(Integer studentId, Integer testId);
 }

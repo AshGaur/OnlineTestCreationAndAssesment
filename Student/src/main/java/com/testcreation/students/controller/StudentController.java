@@ -59,17 +59,19 @@ public class StudentController {
 		return service.getStudentBySubscriptionId(subscriptionId);
 	}
 	
-	
 	//Get a new subscription
-		@PutMapping("/{id}/subscription/{subscriptionId}")
-		void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
-			Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
-			student.setSubscription(new Subscription(subscriptionId));
-			service.updateStudent( student);
+	@PutMapping("/{id}/subscription/{subscriptionId}")
+	void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
+		Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
+		if(student==null) {
+			throw new StudentException("Unknown Student ID !");
 		}
+		student.setSubscription(new Subscription(subscriptionId));
+		service.updateStudent( student);
+	}
 	
-	@PostMapping("/add")
-	void addStudent(@RequestBody Student theStudent) {
+	@PostMapping("/add/subscription/{subscriptionId}")
+	void addStudent(@RequestBody Student theStudent,@PathVariable Integer subscriptionId) {
 		boolean isRequired = true;
 		if(theStudent.getEmail()!=null) {
 			validator.validateEmail(theStudent.getEmail());
@@ -84,7 +86,12 @@ public class StudentController {
 		}
 		validator.validateName(theStudent.getName());
 		validator.validatePassword(theStudent.getPassword());
-		theStudent.setSubscription(new Subscription(1));
+		boolean paymentSuccessful = true;
+		if(subscriptionId!=1 && paymentSuccessful) {
+			theStudent.setSubscription(new Subscription(subscriptionId));
+		}else {
+			theStudent.setSubscription(new Subscription(1));
+		}
 		service.addStudent(theStudent);
 	}
 	

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.testcreation.trainer.bean.Question;
 import com.testcreation.trainer.bean.Test;
+import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.exception.TrainerException;
 import com.testcreation.trainer.service.QuestionService;
+import com.testcreation.trainer.service.TestService;
 
 @RestController
 @RequestMapping("/questions")
@@ -24,6 +26,9 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 
+	@Autowired
+	TestService testService;
+	
 	@GetMapping("/all")
 	Iterable<Question> getAllQuestions(){
 		return questionService.getAllQuestions();
@@ -53,6 +58,10 @@ public class QuestionController {
 	//Add Question to a test ID
 	@PostMapping("/add/test/{testId}")
 	void addNewQuestion(@RequestBody Question tempQuestion, @PathVariable Integer testId) {
+		Test test = testService.getTestById(testId).isPresent()?testService.getTestById(testId).get():null;
+		if(test==null) {
+			throw new TestException("Unknown Test ID !");
+		}
 		tempQuestion.setTest(new Test(testId));
 		switch(tempQuestion.getQuestionType()) {
 			case "one-answer-type" : {
@@ -74,30 +83,56 @@ public class QuestionController {
 			}
 			default : throw new TrainerException("Unknown Question Type !");
 		}
+		
+		//maxMarks initialization
+		double maxMarks = test.getMaxMarks();
+		maxMarks+=tempQuestion.getScore();
+		test.setMaxMarks(maxMarks);
 		questionService.addNewQuestion(tempQuestion);
 	}
 	
 	//Update a question by id
 	@PutMapping("/update/{questionId}")
 	void updateQuestion(@RequestBody Question tempQuestion, @PathVariable Integer questionId) {
-		 if(questionService.getQuestionById(questionId).isEmpty())
-			throw new TrainerException("Question ID not found !"); 
+		Question question =  questionService.getQuestionById(questionId).isPresent()?questionService.getQuestionById(questionId).get():null;
+		if(question==null)
+			throw new TrainerException("Question ID not found !");
+		//Updating maxMarks for the test
+		 if(tempQuestion.getScore()!=null) {
+			 Test test = question.getTest();
+			 Double maxMarks = test.getMaxMarks();
+			 maxMarks-=question.getScore();
+			 maxMarks+=tempQuestion.getScore();
+			 test.setMaxMarks(maxMarks);
+		 }
+		//Update question
 		questionService.updateQuestion(tempQuestion);
 	}
 	
 	//Delete Question by questionId
 	@DeleteMapping("/delete/{questionId}")
 	void deleteQuestionById(@PathVariable Integer questionId) {
-		if(questionService.getQuestionById(questionId).isEmpty())
+		Question question =  questionService.getQuestionById(questionId).isPresent()?questionService.getQuestionById(questionId).get():null;
+		if(question==null)
 			throw new TrainerException("Question ID not found !");
+		//Max marks update in test
+		Test test = question.getTest();
+		test.setMaxMarks(test.getMaxMarks()-question.getScore());
+		testService.updateTest(test);
+		//saving the question
 		questionService.deleteQuestionById(questionId);
 	}
 	
-	//Delete All Questions by Id
+	//Delete All Questions by TestId
 	@DeleteMapping("/delete/test/{testId}")
 	void deleteAllQuestionsFromTestId(@PathVariable Integer testId) {
+		Test test = testService.getTestById(testId).isPresent()?testService.getTestById(testId).get():null;
+		if(test==null) {
+			throw new TestException("Unknown test Id !");
+		}
 		if(questionService.getAllQuestionsByTestId(testId).size()==0)
 			throw new TrainerException("No Questions Present across testId to delete !");
+		test.setMaxMarks(0.0);
 		questionService.deleteAllQuestionsByTestId(testId);
 	}
 }
