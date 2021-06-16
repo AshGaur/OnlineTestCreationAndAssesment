@@ -21,6 +21,8 @@ import com.testcreation.router.bean.Subscription;
 @Service
 public class SubscriptionRouterService {
 	
+	private static final String Subscription = null;
+
 	@Autowired
 	RestTemplate restTemplate;
 	
@@ -45,5 +47,11 @@ public class SubscriptionRouterService {
 		}
 	 public List<Subscription> saveSubscription(){
 		 return Arrays.asList(new Subscription(-1,"Subscription Service will return in sometime","Service Unavailable"));
+		}
+	 public ResponseEntity<String> deleteSubscription(Integer id) {
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<String> request = new HttpEntity<>(Subscription, headers);
+			String url = "http://localhost:8080/subscriptions/delete/"+id.toString();
+			return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
 		}
 }
