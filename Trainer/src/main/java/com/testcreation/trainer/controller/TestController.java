@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.trainer.bean.Category;
+import com.testcreation.trainer.bean.Subscription;
 import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.service.TestService;
+import com.testcreation.trainer.service.TrainerService;
 
 @RestController
 @RequestMapping("/tests")
@@ -28,6 +30,9 @@ public class TestController {
 		
 	@Autowired
 	TestService service;
+	
+	@Autowired
+	TrainerService trainerService;
 	
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	
@@ -63,6 +68,18 @@ public class TestController {
 		
 		Date toDate   = formatter.parse(tempTest.getToDateString());
 		
+		long diff = toDate.getTime() - fromDate.getTime();
+		int dayTOEnter = (int) (diff / (1000*60*60*24)); 
+		
+		
+		Trainer theTrainer = (trainerService.getTrainerById(trainerId)).get();
+		Subscription theSubscription = theTrainer.getSubscription();
+		Integer dayLimit = theSubscription.getTestAvailability();
+		
+		if(dayTOEnter > dayLimit)
+		{
+			throw new TestException("you don't have extra days in your subscription");
+		}
 		service.addTest(tempTest);
 	}
 
