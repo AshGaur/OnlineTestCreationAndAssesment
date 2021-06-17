@@ -50,13 +50,13 @@ public class StudentRouterController {
 		public  ResponseEntity<String> updateStudent(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
 	//	Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
 	//student.setSubscription(new Subscription(subscriptionId));
-			return service.updateStudent(id,subscriptionId);
+			return service.updateStudentBySubscriptionId(subscriptionId,id);
 		}
 	
 
 	@PutMapping("/update/{id}")
 	public  ResponseEntity<String> updateStudent(@RequestBody String theStudent,@PathVariable int id) {
-		return service.updateStudent(theStudent,id);
+		return service.updateStudentById(theStudent,id);
 	}
 	
 //		Optional<Student> dbStudent = service.getStudentById(id);

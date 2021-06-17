@@ -49,14 +49,14 @@ public class StudentRouterService {
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
 	
-	public ResponseEntity<String> updateStudent(Integer subscriptionId,Integer id) {
+	public ResponseEntity<String> updateStudentBySubscriptionId(Integer subscriptionId,Integer id) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<>("", headers);
 		String url = "http://localhost:8081/students/"+id.toString()+"/subscription/"+subscriptionId.toString();
 		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
 	}
 	
-	public ResponseEntity<String> updateStudent(String theStudent,Integer id) {
+	public ResponseEntity<String> updateStudentById(String theStudent,Integer id) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<>(theStudent, headers);
 		String url = "http://localhost:8081/students/update/"+id.toString();

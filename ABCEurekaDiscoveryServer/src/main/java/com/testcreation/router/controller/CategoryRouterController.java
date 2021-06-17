@@ -1,13 +1,18 @@
 package com.testcreation.router.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//import com.testcreation.admin.bean.Category;
 import com.testcreation.router.graphql.CategoryGraphQLService;
 import com.testcreation.router.service.CategoryRouterService;
 
@@ -30,8 +35,20 @@ public class CategoryRouterController {
 	}
 	
 	@PostMapping("/add")
-    public void addCategory(@RequestBody String category) {
-		 service.addCategory(category);
+    public ResponseEntity<String> addCategory(@RequestBody String theCategory) {
+		return service.addCategory(theCategory);
 	}
+	
+	@PutMapping("/update/{testId}")
+	public ResponseEntity<String> updateCategory(@RequestBody String theCategory,@PathVariable String categoryName) {
+    return service.updateCategory(theCategory,categoryName);
+	}
+	
+	@DeleteMapping("/delete/{categoryName}")
+	void deleteByCategoryName(@PathVariable String categoryName) {
+	service.deleteByCategoryName(categoryName);
+	}
+
+	
 	
 }

@@ -10,6 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.testcreation.router.bean.Question;
@@ -41,10 +43,33 @@ public class QuestionRouterService {
 		return restTemplate.getForObject(url, Question.class);
 	}
 	
-	public ResponseEntity<String> addNewQuestion( String Question,  Integer testId) {
+	public ResponseEntity<String> addNewQuestion(@RequestBody Question tempQuestion,  Integer testId) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<>(Question, headers);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
 		String url = "http://localhost:8082/questions/add/test/"+testId.toString();
-		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
+		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class); }
+	
+	public ResponseEntity<String> updateQuestion(@RequestBody Question tempQuestion, @PathVariable Integer questionId) {     /////////doubt   temp questio
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8082/questions/update/"+questionId.toString();
+		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
 	}
+	
+	public ResponseEntity<String> deleteQuestionById(@PathVariable Integer questionId) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8082/questions/delete/"+questionId.toString();
+		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
+	}
+	
+	public ResponseEntity<String>deleteAllQuestionsFromTestId(@PathVariable Integer testId) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8082/questions/delete/test/"+testId.toString();
+		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
+	}
+	
 }
+	
+

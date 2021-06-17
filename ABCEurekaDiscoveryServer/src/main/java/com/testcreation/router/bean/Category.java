@@ -12,11 +12,15 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+
 //@Entity(name="categories")
 public class Category {
 
 //	@Id
 	String categoryName;
+	
+	public Category(String categoryName) {
+		this.categoryName = categoryName;
+	}
 	
 }
