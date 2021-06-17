@@ -49,7 +49,7 @@ public class TrainerRouterService {
 	}
 	public ResponseEntity<String> deleteTrainer(Integer id) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<>(Trainer, headers);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
 		String url = "http://localhost:8082/trainers/add";
 		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
 	}

@@ -32,5 +32,8 @@ public class Question {
 	
 	private Test test;
 	
+	public Question(Integer questionId) {
+		this.id = questionId;
+	}
 	
 }

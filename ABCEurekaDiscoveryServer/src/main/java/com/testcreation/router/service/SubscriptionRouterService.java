@@ -50,7 +50,7 @@ public class SubscriptionRouterService {
 		}
 	 public ResponseEntity<String> deleteSubscription(Integer id) {
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			HttpEntity<String> request = new HttpEntity<>(Subscription, headers);
+			HttpEntity<String> request = new HttpEntity<>("", headers);
 			String url = "http://localhost:8080/subscriptions/delete/"+id.toString();
 			return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
 		}
