@@ -48,4 +48,26 @@ public class TestRouterService {
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
 
+	public ResponseEntity<String> updateTest(String tempTest, Integer testId) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>(tempTest, headers);
+		String url = "http://localhost:8082/tests/update/"+testId.toString();
+		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+	}
+
+	public ResponseEntity<String> deleteTest(Integer testId) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8082/tests/delete/"+testId.toString();
+		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
+	}
+	
+	public ResponseEntity<String> deleteTestsByTrainerId(Integer trainerId) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8082/tests/delete/trainer/"+trainerId.toString();
+		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
+	}
+	 
+
 }

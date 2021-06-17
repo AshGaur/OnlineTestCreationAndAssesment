@@ -67,7 +67,7 @@ public class StudentController {
 			throw new StudentException("Unknown Student ID !");
 		}
 		student.setSubscription(new Subscription(subscriptionId));
-		service.updateStudent( student);
+		service.updateStudent(student);
 	}
 	
 	@PostMapping("/add/subscription/{subscriptionId}")

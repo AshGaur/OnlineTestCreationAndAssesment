@@ -3,11 +3,16 @@ package com.testcreation.router.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.testcreation.router.bean.Student;
+import com.testcreation.router.bean.Subscription;
 import com.testcreation.router.graphql.StudentGraphQLService;
 import com.testcreation.router.service.StudentRouterService;
 
@@ -22,6 +27,8 @@ public class StudentRouterController {
 	
 	@Autowired
 	StudentGraphQLService graphQLService;
+
+	//private String theStudent;
 	
 	@PostMapping
 	public ResponseEntity<Object> getAllQLStudents(@RequestBody String query){
@@ -35,16 +42,23 @@ public class StudentRouterController {
 	}
 	
 //	//Get a new subscription
-//		@PutMapping("/{id}/subscription/{subscriptionId}")
-//		void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
-//			Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
-//			student.setSubscription(new Subscription(subscriptionId));
-//			service.updateStudent( student);
-//		}
-//	
+	
 
-//	@PutMapping("/update/{id}")
-//	void updateStudent(@RequestBody Student theStudent,@PathVariable int id) throws IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {
+	
+	
+		@PutMapping("/{id}/subscription/{subscriptionId}")
+		public  ResponseEntity<String> updateStudent(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
+	//	Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
+	//student.setSubscription(new Subscription(subscriptionId));
+			return service.updateStudent(id,subscriptionId);
+		}
+	
+
+	@PutMapping("/update/{id}")
+	public  ResponseEntity<String> updateStudent(@RequestBody String theStudent,@PathVariable int id) {
+		return service.updateStudent(theStudent,id);
+	}
+	
 //		Optional<Student> dbStudent = service.getStudentById(id);
 //		if(dbStudent.isEmpty()) {
 //			throw new StudentException("No Student Present with provided ID !");
@@ -69,14 +83,10 @@ public class StudentRouterController {
 //				}
 //			}
 //		}
-//		service.updateStudent(existingStudent);
-//	}
-//	
-//	@DeleteMapping("/delete/{id}")
-//	void deleteStudent(@PathVariable Integer id) {
-//		if(service.getStudentById(id).isEmpty()){
-//			throw new StudentException("student id dosent exist");
-//		}
-//		service.deleteStudent(id);
-	}	
 
+//	
+	@DeleteMapping("/delete/{id}")
+	public  void deleteStudent(@PathVariable Integer id) {
+		service.deleteStudent(id);
+	}	
+}

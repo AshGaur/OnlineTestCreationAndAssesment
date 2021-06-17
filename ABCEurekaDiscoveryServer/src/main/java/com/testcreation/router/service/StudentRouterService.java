@@ -45,12 +45,42 @@ public class StudentRouterService {
 	public ResponseEntity<String> addStudent(String student) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<>(student, headers);
-		String url = "http://localhost:8080/students/add";
+		String url = "http://localhost:8081/students/add";
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
+	
+	public ResponseEntity<String> updateStudent(Integer subscriptionId,Integer id) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8081/students/"+id.toString()+"/subscription/"+subscriptionId.toString();
+		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+	}
+	
+	public ResponseEntity<String> updateStudent(String theStudent,Integer id) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>(theStudent, headers);
+		String url = "http://localhost:8081/students/update/"+id.toString();
+		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+	}
+
+	public ResponseEntity<String> deleteStudent(Integer id) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8081/students/delete/"+id.toString();
+		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
+	}
 }
+
+
+
+
 	
 	
+	
+
+
+
+
 	
 
 
