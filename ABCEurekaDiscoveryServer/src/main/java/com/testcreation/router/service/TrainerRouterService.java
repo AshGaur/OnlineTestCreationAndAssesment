@@ -53,5 +53,19 @@ public class TrainerRouterService {
 		String url = "http://localhost:8082/trainers/add";
 		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
 	}
+	
+	 public ResponseEntity<String> updateTrainer(String theTrainer,Integer id) {
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<String> request = new HttpEntity<>(theTrainer, headers);
+			String url = "http://localhost:8082/trainers/update/"+id.toString();
+			return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+		}
+	 
+	 public ResponseEntity<String> updateTrainer(Integer subscriptionId,Integer id) {
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<String> request = new HttpEntity<>("", headers);
+			String url = "http://localhost:8082/trainers/"+id.toString()+"/subscription/"+subscriptionId.toString();
+			return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+		}
 }
 	

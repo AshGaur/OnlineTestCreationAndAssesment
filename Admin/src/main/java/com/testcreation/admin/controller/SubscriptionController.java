@@ -43,7 +43,7 @@ public class SubscriptionController {
 	}
 	
 	@PutMapping("/update/{id}")
-	void updateTrainer(@RequestBody Subscription theSubscription, @PathVariable Integer id) {
+	void updateSubscription(@RequestBody Subscription theSubscription, @PathVariable Integer id) {
 		if(service.getSubscriptionById(id).isEmpty())
 			throw new SubscriptionException("Subscription ID doesn't exist !");
 		service.updateSubscription(theSubscription);

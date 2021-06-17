@@ -54,4 +54,12 @@ public class SubscriptionRouterService {
 			String url = "http://localhost:8080/subscriptions/delete/"+id.toString();
 			return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
 		}
+	 
+	 //update method for subscription 
+			 public ResponseEntity<String> updateSubscription(String theSubscription,Integer id) {
+					headers.setContentType(MediaType.APPLICATION_JSON);
+					HttpEntity<String> request = new HttpEntity<>(theSubscription, headers);
+					String url = "http://localhost:8080/subscriptions/update/"+id.toString();
+					return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+				}
 }
