@@ -1,11 +1,8 @@
 package com.testcreation.trainer.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.trainer.bean.Category;
-import com.testcreation.trainer.bean.Subscription;
 import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.bean.Trainer;
+import com.testcreation.trainer.exception.SubscriptionValidation;
 import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.service.TestService;
 import com.testcreation.trainer.service.TrainerService;
@@ -34,7 +31,8 @@ public class TestController {
 	@Autowired
 	TrainerService trainerService;
 	
-	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+	@Autowired
+	SubscriptionValidation subValidator;
 	
 	@GetMapping("/all")
 	Iterable<Test> getAllTests() {
@@ -61,25 +59,15 @@ public class TestController {
 	
 	@PostMapping("/add/trainer/{trainerId}/category/{categoryName}")
 	void addTest(@RequestBody Test tempTest,@PathVariable Integer trainerId,@PathVariable String categoryName) throws ParseException  {
+		
+		subValidator.validateTrainerSubscription(tempTest, trainerId);
+		
 		tempTest.setTrainer(new Trainer(trainerId));
 		tempTest.setCategory(new Category(categoryName));
+
+		Trainer trainer = trainerService.getTrainerById(trainerId).get();
+		trainer.setTestsLeft(trainer.getTestsLeft()-1);
 		
-		Date fromDate = formatter.parse(tempTest.getFromDateString());
-		
-		Date toDate   = formatter.parse(tempTest.getToDateString());
-		
-		long diff = toDate.getTime() - fromDate.getTime();
-		int dayTOEnter = (int) (diff / (1000*60*60*24)); 
-		
-		
-		Trainer theTrainer = (trainerService.getTrainerById(trainerId)).get();
-		Subscription theSubscription = theTrainer.getSubscription();
-		Integer dayLimit = theSubscription.getTestAvailability();
-		
-		if(dayTOEnter > dayLimit)
-		{
-			throw new TestException("you don't have extra days in your subscription");
-		}
 		service.addTest(tempTest);
 	}
 
@@ -88,7 +76,10 @@ public class TestController {
 		if(service.getTestById(testId).isEmpty()) {
 			throw new TestException("No tests found with the entered ID !");
 		}
-		 service.updateTest(tempTest);
+		
+		subValidator.validateTrainerSubscription(tempTest, tempTest.getTrainer().getId());
+		
+		service.updateTest(tempTest);
 	}
 			
 	@DeleteMapping("/delete/{testId}")

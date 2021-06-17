@@ -54,10 +54,11 @@ public class TrainerRouterController {
 	}
 
 //	 Add trainer to a subscription id
-	@PostMapping("/add")
+	@PostMapping("/add/subscription/{subscriptionId}")
 	public ResponseEntity<String> addTrainer(@RequestBody String theTrainer , @PathVariable int subscriptionId){
-		return service.addTrainer(theTrainer);
+		return service.addTrainer(theTrainer,subscriptionId);
 	}
+	
 	@PutMapping("/update/{id}")
 	public  ResponseEntity<String> updateTrainer(@RequestBody String updateTrainer,@PathVariable int id) {
 		return service.updateTrainer(updateTrainer,id);

@@ -5,14 +5,19 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.testcreation.students.bean.Result;
+import com.testcreation.students.bean.Subscription;
 import com.testcreation.students.dao.ResultRepository;
 
 @Service
 public class ResultService {
 	@Autowired
 	ResultRepository repo;
+	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	public Iterable<Result> getAllResult() {
 		return repo.findAll();                          
@@ -44,8 +49,13 @@ public class ResultService {
 	}
 
 	//Get Results By StudentId and TestId
-	public List<Result> getResultsByStudentIdAndTestId(Integer studentId,Integer testId){
-		return repo.findByStudentIdAndTestId(studentId,testId);
+	public Result getResultByStudentIdAndTestId(Integer studentId,Integer testId){
+		return repo.findByStudentIdAndTestId(studentId,testId).get(0);
+	}
+
+	public Subscription getSubscriptionById(Integer subscriptionId) {
+		String url = "http://localhost:8080/";
+		return restTemplate.getForObject(url, Subscription.class);
 	}
 	
 }

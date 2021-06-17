@@ -1,0 +1,65 @@
+schema{
+	query:Query
+}
+
+type Query{
+	allResults: [Result]
+	result: Result
+	results(studentId:Int): [Result]
+	resultByStudentAndTest(studentId:Int,testId:Int): Result
+}
+
+type Result{
+	id: Int
+	score: Float
+	numberOfAttempts: Int
+	completed: Boolean
+	endString: String
+	student:Student
+	test: Test
+}
+
+type Test{
+	id: Int
+	specialInstructions: String
+	fromDateString: String
+	toDateString: String
+	title: String
+	maxMarks: Float
+	duration: Int
+	trainer: Trainer
+	category: Category
+}
+
+type Category{
+	categoryName: String
+}
+
+type Trainer{
+	id: Int
+	name: String
+	email: String
+	password: String
+	phone: String
+	subscription: Subscription
+}
+
+type Subscription{
+	id: Int
+	code: String
+	role: String
+	description: String
+	testCreationLimit: Int
+	testAvailability: Int
+	serviceUsageLimit: Int
+	price: Float
+}
+
+type Student{
+	id: Int
+	name: String
+	email: String
+	password: String
+	phone: String
+	subscription: Subscription
+}

@@ -6,6 +6,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +39,10 @@ public class StudentController {
 	
 	@Autowired
 	StringValidators validator;
+	
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	
+	Calendar calendar = Calendar.getInstance();
 	
 	@GetMapping("/all")
 	Iterable<Student> getAllStudents() {
@@ -92,6 +99,18 @@ public class StudentController {
 		}else {
 			theStudent.setSubscription(new Subscription(1));
 		}
+		
+		calendar.setTime(new Date());
+		//Subscription values setting for Trainer
+		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		
+		//Set endService Date
+		calendar.add(Calendar.DATE, subscription.getServiceUsageLimit());
+		theStudent.setEndServiceDate(formatter.format(calendar.getTime()));
+		
+		//Set tests to be created
+		theStudent.setTestsLeft(subscription.getTestNumberLimit());
+		
 		service.addStudent(theStudent);
 	}
 	

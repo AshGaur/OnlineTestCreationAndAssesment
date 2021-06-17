@@ -15,16 +15,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.testcreation.students.bean.Attempt;
 import com.testcreation.students.bean.Question;
 import com.testcreation.students.bean.Result;
 import com.testcreation.students.bean.Student;
+import com.testcreation.students.bean.Subscription;
 import com.testcreation.students.bean.Test;
 import com.testcreation.students.dto.ResultDto;
 import com.testcreation.students.exception.StudentException;
+import com.testcreation.students.exception.SubscriptionValidation;
 import com.testcreation.students.service.AttemptService;
 import com.testcreation.students.service.ResultService;
+import com.testcreation.students.service.StudentService;
 
 
 @RestController
@@ -37,9 +41,15 @@ public class ResultController {
 	@Autowired
 	AttemptService attemptService;
 	
+	@Autowired
+	StudentService studentService;
+	
+	@Autowired
+	SubscriptionValidation subValidator;
+	
 	Calendar calendar = Calendar.getInstance();
 	
-	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
 	@GetMapping("/all")
 	public Iterable<Result> getAllResult() {
@@ -61,28 +71,38 @@ public class ResultController {
 	}
 	
 	@GetMapping("/student/{studentId}/test/{testId}")
-	public List<Result> getResultsByStudentIdAndTestId(@PathVariable Integer studentId,@PathVariable Integer testId){
-		return service.getResultsByStudentIdAndTestId(studentId,testId);
+	public Result getResultByStudentIdAndTestId(@PathVariable Integer studentId,@PathVariable Integer testId){
+		return service.getResultByStudentIdAndTestId(studentId,testId);
 	}
 	
-	@PostMapping("/add")
-	void addResult(@RequestBody ResultDto resultDto) {
-		if(service.getResultsByStudentIdAndTestId(resultDto.getStudentId(), resultDto.getTestId()).size()>0) {
-			throw new StudentException("Student already has given this test !");
-		}
-		service.addResult(new Result(resultDto.getScore(),resultDto.getNumberOfAttempts(),resultDto.getStudentId(),resultDto.getTestId()));	
+	@GetMapping("/subscription/{subscriptionId}")
+	public Subscription getSubscriptionById(@PathVariable Integer subscriptionId) {
+		return service.getSubscriptionById(subscriptionId);
+	}
+	
+	@GetMapping("/getTest/{testId}")
+	public Test getTestById(@PathVariable Integer testId) {
+		return studentService.getTestById(testId);
 	}
 	
 	@PostMapping("/add/student/{studentId}/test/{testId}")
 	void addResult(@RequestBody Result result,@PathVariable Integer studentId,@PathVariable Integer testId) {
 		result.setStudent(new Student(studentId));
 		result.setTest(new Test(testId));
-		if(service.getResultsByStudentIdAndTestId(studentId, testId).size()>0) {
+		if(service.getResultByStudentIdAndTestId(studentId, testId)!=null) {
 			throw new StudentException("Student already has given this test !");
 		}
+		subValidator.validateStudentSubscription(result, studentId);
+		
 		calendar.setTime(new Date());
-		calendar.add(Calendar.MINUTE, result.getTest().getDuration());
+		
+		Test test = studentService.getTestById(testId);
+		
+		calendar.add(Calendar.MINUTE, test.getDuration());
 		result.setEndString(formatter.format(calendar.getTime()));
+		
+		Student student = studentService.getStudentById(studentId).get();
+		student.setTestsLeft(student.getTestsLeft()-1);
 		service.addResult(result);
 	}
 	
@@ -90,6 +110,8 @@ public class ResultController {
 	void updateResult(@RequestBody Result theResult,@PathVariable Integer id) {
 		if(service.getResultById(id).isEmpty())
 			throw new StudentException("Result doesn't exist with ID provied...!");
+		
+		subValidator.validateStudentSubscription(theResult, theResult.getStudent().getId());
 		service.updateResultById(theResult);
 	}
 	

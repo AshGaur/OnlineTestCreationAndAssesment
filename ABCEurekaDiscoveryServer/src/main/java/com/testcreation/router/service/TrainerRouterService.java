@@ -16,7 +16,6 @@ import com.testcreation.router.bean.Trainer;
 
 @Service
 public class TrainerRouterService {
-	private static final String Trainer = null;
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -41,16 +40,16 @@ public class TrainerRouterService {
 		return Arrays.asList(restTemplate.getForObject(url, Trainer[].class));
 	}
 
-	public ResponseEntity<String> addTrainer(String Trainer) {
+	public ResponseEntity<String> addTrainer(String Trainer,Integer subscriptionId) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<>(Trainer, headers);
-		String url = "http://localhost:8082/trainers/add";
+		String url = "http://localhost:8082/trainers/add/subscription/"+subscriptionId;
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
 	public ResponseEntity<String> deleteTrainer(Integer id) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<>("", headers);
-		String url = "http://localhost:8082/trainers/add";
+		String url = "http://localhost:8082/trainers/delete/"+id.toString();
 		return restTemplate.exchange(url,HttpMethod.DELETE ,request, String.class);
 	}
 	

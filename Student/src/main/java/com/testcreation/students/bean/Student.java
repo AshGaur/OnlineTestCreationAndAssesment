@@ -38,6 +38,10 @@ public class Student {
 	@ManyToOne
 	Subscription subscription;
 	
+	Integer testsLeft;
+	
+	String endServiceDate;
+	
 	public Student(Integer studentId){
 		this.id = studentId;
 	}

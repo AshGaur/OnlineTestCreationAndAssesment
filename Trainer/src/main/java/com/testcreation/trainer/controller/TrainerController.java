@@ -1,9 +1,13 @@
 package com.testcreation.trainer.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +33,10 @@ public class TrainerController {
 	@Autowired
 	StringValidators validator;
 	
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	
+	Calendar calendar = Calendar.getInstance();
+	
 	// Get all trainers
 	@GetMapping("/all")
 	Iterable<Trainer> getAllTrainers() {
@@ -49,6 +57,11 @@ public class TrainerController {
 		if(service.getTrainerBySubscriptionId(subscriptionId).isEmpty())
 			throw new TrainerException("subscription ID doesn't exist or no trainer found related to this subscription");
 		return service.getTrainerBySubscriptionId(subscriptionId);
+	}
+	
+	@GetMapping("/getsub/{subscriptionId}")
+	public Subscription getSubscriptionById(@PathVariable Integer subscriptionId) {
+		return service.getSubscriptionById(subscriptionId);
 	}
 	
 	//Get a new subscription (update subscription id for trainer)
@@ -83,8 +96,20 @@ public class TrainerController {
 		if(subscriptionId!=1 && paymentSuccessful) {
 			theTrainer.setSubscription(new Subscription(subscriptionId));
 		}else {
+			subscriptionId = 1;
 			theTrainer.setSubscription(new Subscription(1));
 		}
+		calendar.setTime(new Date());
+		//Subscription values setting for Trainer
+		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		
+		//Set endService Date
+		calendar.add(Calendar.DATE, subscription.getServiceUsageLimit());
+		theTrainer.setEndServiceDate(formatter.format(calendar.getTime()));
+		
+		//Set tests to be created
+		theTrainer.setTestsLeft(subscription.getTestNumberLimit());
+		
 		service.addTrainer(theTrainer);
 	}
 	

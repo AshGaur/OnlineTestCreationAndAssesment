@@ -29,7 +29,7 @@ public class Subscription {
 	@Column(nullable=false)
 	private String description;
 	
-	private Integer testCreationLimit=0;	//tests
+	private Integer testNumberLimit=0;	//tests
 	private Integer testAvailability=0;		//days
 	private Integer serviceUsageLimit=0; 	//days
 	

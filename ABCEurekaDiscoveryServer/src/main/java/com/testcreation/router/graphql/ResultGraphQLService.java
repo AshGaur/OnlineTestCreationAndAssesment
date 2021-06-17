@@ -12,7 +12,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.testcreation.router.bean.Question;
+import com.testcreation.router.bean.Result;
 import com.testcreation.router.service.QuestionRouterService;
+import com.testcreation.router.service.ResultRouterService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -23,12 +25,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class QuestionGraphQLService {
+public class ResultGraphQLService {
 
 	@Autowired
-	QuestionRouterService service;
+	ResultRouterService service;
 	
-	@Value("classpath:questions.graphql")
+	@Value("classpath:results.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -45,9 +47,10 @@ public class QuestionGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allQuestions",(DataFetcher<List<Question>>)(environment)-> service.getAllQuestions())
-                        .dataFetcher("question",(DataFetcher<Question>)(environment)-> service.getQuestionById(environment.getArgument("id")))
-                        .dataFetcher("questions",(DataFetcher<List<Question>>)(environment)-> service.getQuestionsByTestId(environment.getArgument("testId")))
+                        .dataFetcher("allResults",(DataFetcher<List<Result>>)(environment)-> service.getAllResults())
+                        .dataFetcher("result",(DataFetcher<Result>)(environment)-> service.getResultById(environment.getArgument("resultId")))
+                        .dataFetcher("results",(DataFetcher<List<Result>>)(environment)-> service.getResultsByStudentId(environment.getArgument("studentId")))
+                        .dataFetcher("resultByStudentAndTest",(DataFetcher<Result>)(environment)-> service.getResultByStudentIdAndTestId(environment.getArgument("resultId"),environment.getArgument("studentId")))
                  )
                 .build();
     }

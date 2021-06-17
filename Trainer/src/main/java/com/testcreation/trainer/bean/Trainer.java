@@ -34,6 +34,10 @@ public class Trainer {
 	@Column(unique=true)
 	private String phone;
 	
+	private String endServiceDate;
+	
+	private Integer testsLeft;
+	
 	public Trainer(Integer id){
 		this.id = id;
 	}

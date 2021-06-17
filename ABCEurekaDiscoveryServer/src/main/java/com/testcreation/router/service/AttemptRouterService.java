@@ -34,10 +34,9 @@ public class AttemptRouterService {
 		return Arrays.asList(restTemplate.getForObject(url, Attempt[].class));
 	}
 	
-	
-	public List<Attempt> getAttemptsByResultIdAndQuestionId(Integer resultId,Integer questionId) {
+	public Attempt getAttemptByResultIdAndQuestionId(Integer resultId,Integer questionId) {
 		String url = "http://localhost:8081/attempts/result/"+resultId.toString()+"/question/"+questionId.toString();
-		return Arrays.asList(restTemplate.getForObject(url, Attempt[].class));
+		return restTemplate.getForObject(url, Attempt.class);
 	}
 	public List<Attempt> getAttemptsByResultId(Integer resultId) {
 		String url = "http://localhost:8081/attempts/result/"+resultId.toString();

@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Question;
-import com.testcreation.router.service.QuestionRouterService;
-
+import com.testcreation.router.bean.Attempt;
+import com.testcreation.router.service.AttemptRouterService;
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLSchema;
@@ -23,12 +22,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class QuestionGraphQLService {
+public class AttemptGraphQLService {
 
 	@Autowired
-	QuestionRouterService service;
+	AttemptRouterService attemptRouterService;
 	
-	@Value("classpath:questions.graphql")
+	@Value("classpath:attempts.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -45,13 +44,13 @@ public class QuestionGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allQuestions",(DataFetcher<List<Question>>)(environment)-> service.getAllQuestions())
-                        .dataFetcher("question",(DataFetcher<Question>)(environment)-> service.getQuestionById(environment.getArgument("id")))
-                        .dataFetcher("questions",(DataFetcher<List<Question>>)(environment)-> service.getQuestionsByTestId(environment.getArgument("testId")))
+                        .dataFetcher("allAttempts",(DataFetcher<List<Attempt>>)(environment)-> attemptRouterService.getAllAttempts())
+                        .dataFetcher("attemptsByResult", (DataFetcher<List<Attempt>>)(environment)->attemptRouterService.getAttemptsByResultId(environment.getArgument("resultId")))
+                        .dataFetcher("attemptByResultAndQuestion", (DataFetcher<Attempt>)(environment)->attemptRouterService.getAttemptByResultIdAndQuestionId(environment.getArgument("resultId"), environment.getArgument("questionId")))
                  )
                 .build();
     }
-	
+
 	public GraphQL getGraphQL() {
 		return graphQL;
 	}

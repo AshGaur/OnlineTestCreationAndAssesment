@@ -24,22 +24,28 @@ public class ResultRouterService {
 	@Autowired
 	HttpHeaders headers;
 	
-	public List<Object> getAllResults(){
+	public List<Result> getAllResults(){
 		String url="http://localhost:8081/results/all";
-		return Arrays.asList(restTemplate.getForObject(url, Object[].class));
+		return Arrays.asList(restTemplate.getForObject(url, Result[].class));
 		}
-	public Object getResultById(Integer id) {
+	public Result getResultById(Integer id) {
 		String url = "http://localhost:8081/results/"+id.toString();
 		return restTemplate.getForObject(url, Result.class);
 	}
-	public Object getResultByStudentId(Integer studentId) {
+	public List<Result> getResultsByStudentId(Integer studentId) {
 		String url = "http://localhost:8081/results/"+studentId.toString();
 		return Arrays.asList(restTemplate.getForObject(url, Result.class));
 	}
+	
+	public Result getResultByStudentIdAndTestId(Integer studentId,Integer testId) {
+		String url = "http://localhost:8081/results/student/"+studentId+"/test/"+testId;
+		return restTemplate.getForObject(url, Result.class);
+	}
+	
 	public ResponseEntity<String> addResult(String result,Integer testId,Integer studentId) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<>(result, headers);
-		String url = "http://localhost:8081/results/add/student/{studentId}/test/{testId}";
+		String url = "http://localhost:8081/results/add/student/"+studentId+"/test/"+testId;
 		return restTemplate.exchange(url,HttpMethod.POST ,request, String.class);
 	}
 	public ResponseEntity<String> deleteResultById(String result,Integer id) {

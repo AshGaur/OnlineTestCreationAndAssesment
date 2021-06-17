@@ -1,0 +1,15 @@
+schema{
+	query:Query
+}
+
+type Query{
+	allAttempts: [Attempt]
+	attemptsByResult(resultId:Int):[Attempt]
+	attemptByResultAndQuestion(resultId:Int,questionId:Int): Attempt
+}
+
+type Attempt{
+	id: Int
+	correct: Boolean
+	attemptString: String
+}

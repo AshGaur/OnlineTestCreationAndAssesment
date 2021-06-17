@@ -53,8 +53,8 @@ public class AttemptController {
 	}
 	
 	@GetMapping("/result/{resultId}/question/{questionId}")
-	public List<Attempt> getAttemptsByResultIdAndQuestionId(@PathVariable Integer resultId,@PathVariable Integer questionId){
-		return service.getAttemptsByResultIdAndQuestionId(resultId,questionId);
+	public Attempt getAttemptByResultIdAndQuestionId(@PathVariable Integer resultId,@PathVariable Integer questionId){
+		return service.getAttemptByResultIdAndQuestionId(resultId,questionId);
 	}
 	
 	@GetMapping("/result/{resultId}")

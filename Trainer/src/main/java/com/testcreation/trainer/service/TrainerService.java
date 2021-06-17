@@ -3,7 +3,11 @@ package com.testcreation.trainer.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.testcreation.trainer.bean.Subscription;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.dao.TrainerRepository;
 
@@ -12,7 +16,10 @@ public class TrainerService {
 	
 	@Autowired 
 	TrainerRepository trainerRepo; 
-			
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
 	 public Iterable<Trainer> getAllTrainers() {
 		return trainerRepo.findAll();
 	 }
@@ -25,16 +32,21 @@ public class TrainerService {
 		 trainerRepo.save(theTrainer);
 	 }
 	 
-	 public void updateTrainer(Trainer theTrainer) {
+	public void updateTrainer(Trainer theTrainer) {
 		  trainerRepo.save(theTrainer);
-	 }
+	}
 	 
-	 public void deleteTrainer(Integer id) {
+	public void deleteTrainer(Integer id) {
 		  trainerRepo.deleteById(id);
-	 }
+	}
 
 	public List<Trainer> getTrainerBySubscriptionId(Integer id) {
 		
 		 return trainerRepo.findBySubscriptionId(id);
+	}
+
+	public Subscription getSubscriptionById(Integer subscriptionId) {
+		String url = "http://localhost:8080/subscriptions/"+subscriptionId;
+		return restTemplate.getForObject(url, Subscription.class);
 	}
 }
