@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.testcreation.router.bean.Attempt;
 import com.testcreation.router.bean.Student;
 import com.testcreation.router.service.StudentRouterService;
 @Service
@@ -24,11 +26,16 @@ public class StudentRouterService {
 	@Autowired
 	HttpHeaders headers;
 	
-	
+	@HystrixCommand(fallbackMethod="saveStudents")
 	public List<Student> getAllStudents() {
 		String url = "http://localhost:8081/students/all";
 		return Arrays.asList(restTemplate.getForObject(url, Student[].class));
 	}
+	
+	public List<Student> saveStudents(){
+		return Arrays.asList(new Student(-1,null, null, "Student Service will return in sometime", null, null, null, null));
+	}
+	
 
 
 	public Student getStudentById(Integer id) {

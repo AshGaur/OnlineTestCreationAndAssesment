@@ -1,7 +1,6 @@
 package com.testcreation.router.graphql;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -13,7 +12,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.testcreation.router.bean.Student;
+import com.testcreation.router.bean.Subscription;
 import com.testcreation.router.service.StudentRouterService;
+import com.testcreation.router.service.SubscriptionRouterService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -24,12 +25,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class StudentGraphQLService {
+public class SubscriptionGraphQLService {
 
 	@Autowired
-	StudentRouterService studentRouterService;
-	
-	@Value("classpath:students.graphql")
+	SubscriptionRouterService subscriptionRouterService;
+		
+	@Value("classpath:subscriptions.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -46,9 +47,9 @@ public class StudentGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allStudents",(DataFetcher<List<Student>>)(environment)-> studentRouterService.getAllStudents())
-                        .dataFetcher("student", (DataFetcher<Student>)(environment)->studentRouterService.getStudentById(environment.getArgument("id")))
-                        .dataFetcher("students", (DataFetcher<List<Student>>)(environment)->studentRouterService.getStudentsBySubscriptionId(environment.getArgument("subId")))
+                        .dataFetcher("allSubscription",(DataFetcher<List<Subscription>>)(environment)-> subscriptionRouterService.getAllSubcription())
+                        .dataFetcher("subscription", (DataFetcher<Subscription>)(environment)->subscriptionRouterService.getSubscriptionById(environment.getArgument("id")))
+          
                  )
                 .build();
     }
@@ -58,3 +59,6 @@ public class StudentGraphQLService {
 	}
 	
 }
+
+	
+

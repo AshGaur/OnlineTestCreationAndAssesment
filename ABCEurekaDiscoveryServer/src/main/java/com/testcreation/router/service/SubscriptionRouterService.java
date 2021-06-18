@@ -25,9 +25,9 @@ public class SubscriptionRouterService {
 	@Autowired
 	HttpHeaders headers;
 	
-	 public Object getSubscriptionById(Integer id){
+	 public Subscription getSubscriptionById(Integer id){
 		 String url="http://localhost:8080/subscriptions/"+id.toString();
-		 return restTemplate.getForObject(url, Object.class);
+		 return restTemplate.getForObject(url, Subscription.class);
 	 }
 	 
 	 public ResponseEntity<String> addSubscription(String Subscription) {

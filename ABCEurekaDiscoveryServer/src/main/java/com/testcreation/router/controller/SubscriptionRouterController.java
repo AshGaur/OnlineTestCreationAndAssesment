@@ -3,6 +3,7 @@ package com.testcreation.router.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.router.bean.Subscription;
+import com.testcreation.router.graphql.AttemptGraphQLService;
+import com.testcreation.router.graphql.SubscriptionGraphQLService;
 import com.testcreation.router.service.SubscriptionRouterService;
+
+import graphql.ExecutionResult;
 
 
 @RestController
@@ -24,13 +29,22 @@ public class SubscriptionRouterController {
 	@Autowired
 	SubscriptionRouterService service;
 	
+	@Autowired
+	SubscriptionGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLSubscriptions(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
+	
 	@GetMapping("/all")
 	public List<Subscription> getAllSubscription() {
 		return service.getAllSubcription();
 	}
 	
 	@GetMapping("/{id}")
-	public Object getSubscriptionById(@PathVariable Integer id) {
+	public Subscription getSubscriptionById(@PathVariable Integer id) {
 		return service.getSubscriptionById(id);
 	}
 

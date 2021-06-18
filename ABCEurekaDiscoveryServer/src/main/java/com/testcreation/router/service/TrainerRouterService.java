@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.testcreation.router.bean.Attempt;
 import com.testcreation.router.bean.Trainer;
 
 @Service
@@ -23,11 +25,16 @@ public class TrainerRouterService {
 	@Autowired
 	HttpHeaders headers;
 	
-	
+	@HystrixCommand(fallbackMethod="saveTrainers")
 	public List<Trainer> getAllTrainers() {
 		String url = "http://localhost:8082/trainers/all";
 		return Arrays.asList(restTemplate.getForObject(url, Trainer[].class));
 	}
+	
+	public List<Trainer> saveTrainers(){
+		return Arrays.asList(new Trainer(null,null, null, "Trainer Service will return in sometime"));
+	}
+	
 
 
 	public Trainer getTrainerById(Integer id) {

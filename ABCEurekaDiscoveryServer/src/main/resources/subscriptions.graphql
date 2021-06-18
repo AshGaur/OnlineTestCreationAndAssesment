@@ -1,0 +1,19 @@
+schema{
+	query:Query
+}
+
+type Query{
+	allSubscription: [Subscription]
+	subscription(id:Int): Subscription
+}
+
+type Subscription{
+	id: Int
+	code: String
+	role: String
+	description: String
+	testNumberLimit: Int
+	testAvailability: Int
+	serviceUsageLimit: Int
+	price: Float
+}

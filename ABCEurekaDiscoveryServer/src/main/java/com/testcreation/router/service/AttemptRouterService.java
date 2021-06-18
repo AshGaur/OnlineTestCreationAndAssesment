@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.testcreation.router.bean.Admin;
 import com.testcreation.router.bean.Attempt;
 import com.testcreation.router.bean.Student;
 import com.testcreation.router.bean.Test;
@@ -29,10 +31,18 @@ public class AttemptRouterService {
 	@Autowired
 	HttpHeaders headers;
 	
+	
+	@HystrixCommand(fallbackMethod="saveAttempts")
 	public List<Attempt> getAllAttempts() {
 		String url = "http://localhost:8081/attempts/all";
 		return Arrays.asList(restTemplate.getForObject(url, Attempt[].class));
 	}
+	
+	
+	public List<Attempt> saveAttempts(){
+		return Arrays.asList(new Attempt(-1,null, null, "Attempt Service will return in sometime"));
+	}
+	
 	
 	public Attempt getAttemptByResultIdAndQuestionId(Integer resultId,Integer questionId) {
 		String url = "http://localhost:8081/attempts/result/"+resultId.toString()+"/question/"+questionId.toString();
