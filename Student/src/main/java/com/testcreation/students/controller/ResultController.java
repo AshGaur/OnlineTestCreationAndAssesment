@@ -77,7 +77,7 @@ public class ResultController {
 	
 	@GetMapping("/subscription/{subscriptionId}")
 	public Subscription getSubscriptionById(@PathVariable Integer subscriptionId) {
-		return service.getSubscriptionById(subscriptionId);
+		return studentService.getSubscriptionById(subscriptionId);
 	}
 	
 	@GetMapping("/getTest/{testId}")

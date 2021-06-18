@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.router.bean.Result;
-import com.testcreation.router.bean.Student;
-import com.testcreation.router.bean.Test;
-import com.testcreation.router.graphql.AttemptGraphQLService;
 import com.testcreation.router.graphql.ResultGraphQLService;
 import com.testcreation.router.service.ResultRouterService;
 
@@ -45,18 +42,22 @@ public class ResultRouterController {
 	public List<Result> getAllResults() {
 		return service.getAllResults();
 	}
+	
 	@GetMapping("/{id}")
 	public Result getResultById(@PathVariable Integer id){
 		return service.getResultById(id);
     }
+	
 	@GetMapping("/results/{StudentId}")
 	public List<Result> getResultsByStudentId(Integer studentId) {
 		return service.getResultsByStudentId(studentId);
 	}
+	
 	@PostMapping("/add/student/{studentId}/test/{testId}")
 	void addResult(@RequestBody String result,@PathVariable Integer studentId,@PathVariable Integer testId){
 			service.addResult(result, testId, studentId);
 	}
+	
 	@DeleteMapping("/delete/{id}")
 	void deleteResultById(@RequestBody String result,@PathVariable Integer id) { 
 		service.deleteResultById(result, id);

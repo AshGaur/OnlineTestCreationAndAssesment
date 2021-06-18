@@ -50,13 +50,17 @@ public class ResultService {
 
 	//Get Results By StudentId and TestId
 	public Result getResultByStudentIdAndTestId(Integer studentId,Integer testId){
-		return repo.findByStudentIdAndTestId(studentId,testId).get(0);
+		if(repo.findByStudentIdAndTestId(studentId,testId).size()>0) {
+			return repo.findByStudentIdAndTestId(studentId,testId).get(0);
+		}else {
+			return null;
+		}
 	}
 
-	public Subscription getSubscriptionById(Integer subscriptionId) {
-		String url = "http://localhost:8080/";
-		return restTemplate.getForObject(url, Subscription.class);
-	}
+//	public Subscription getSubscriptionById(Integer subscriptionId) {
+//		String url = "http://localhost:8080/";
+//		return restTemplate.getForObject(url, Subscription.class);
+//	}
 	
 }
 

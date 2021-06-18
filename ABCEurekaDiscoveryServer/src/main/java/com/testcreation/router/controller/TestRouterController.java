@@ -51,13 +51,10 @@ public class TestRouterController {
 //		}
 		service.deleteTest(testId);
 	}
-//	
+
 	@DeleteMapping("/delete/trainer/{trainerId}")
 	void deleteTestsByTrainerId(@PathVariable int trainerId) {
-//		if(service.getTestsByTrainerId(trainerId).size()==0) {
-//			throw new TestException("No tests found for this trainer !");
-//		}
-	service.deleteTestsByTrainerId(trainerId);
+		service.deleteTestsByTrainerId(trainerId);
 	}
 }
 
