@@ -37,7 +37,11 @@ public class AttemptService {
 	}
 	
 	public Attempt getAttemptByResultIdAndQuestionId(Integer resultId,Integer questionId){
-		return repo.findByResultListIdAndQuestionListId(resultId,questionId).get(0);
+		if(repo.findByResultListIdAndQuestionListId(resultId,questionId).size()>0) {
+			return repo.findByResultListIdAndQuestionListId(resultId,questionId).get(0);
+		}else {
+			return null;
+		}
 	}
 	
 	public List<Attempt> getAttemptsByResultId(Integer resultId){

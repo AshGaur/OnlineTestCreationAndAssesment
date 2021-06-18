@@ -70,6 +70,11 @@ public class ResultController {
 		return service.getResultsByStudentId(studentId);
 	}
 	
+	@GetMapping("/test/{testId}")
+	public List<Result> getResultsByTestId(@PathVariable Integer testId){
+		return service.getResultsByTestId(testId);
+	}
+	
 	@GetMapping("/student/{studentId}/test/{testId}")
 	public Result getResultByStudentIdAndTestId(@PathVariable Integer studentId,@PathVariable Integer testId){
 		return service.getResultByStudentIdAndTestId(studentId,testId);
@@ -90,7 +95,7 @@ public class ResultController {
 		result.setStudent(new Student(studentId));
 		result.setTest(new Test(testId));
 		if(service.getResultByStudentIdAndTestId(studentId, testId)!=null) {
-			throw new StudentException("Student already has given this test !");
+			throw new StudentException("Student already has started this test !");
 		}
 		subValidator.validateStudentSubscription(result, studentId);
 		

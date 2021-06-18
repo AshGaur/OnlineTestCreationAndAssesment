@@ -37,7 +37,7 @@ public class AdminRouterService {
 	
 	@HystrixCommand(fallbackMethod="saveAdmins")
 	public List<Admin> getAllAdmins() {
-		String url = "http://localhost:8080/admins/all";
+		String url = "http://admin-microservice/admin-port/admins/all";
 		return Arrays.asList(restTemplate.getForObject(url, Admin[].class));
 	}
 	

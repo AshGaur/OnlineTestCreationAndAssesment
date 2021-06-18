@@ -57,6 +57,11 @@ public class TestController {
 		return service.getTestsByCategoryName(categoryName);
 	}
 	
+	@GetMapping("/studentCount/test/testId")
+	public Integer getStudentCountByTestId(@PathVariable Integer testId) {
+		return service.getStudentCountByTestId(testId);
+	}
+	
 	@PostMapping("/add/trainer/{trainerId}/category/{categoryName}")
 	void addTest(@RequestBody Test tempTest,@PathVariable Integer trainerId,@PathVariable String categoryName) throws ParseException  {
 		

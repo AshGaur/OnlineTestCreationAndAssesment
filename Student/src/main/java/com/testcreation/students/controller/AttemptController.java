@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.testcreation.students.bean.Attempt;
+import com.testcreation.students.bean.Result;
 import com.testcreation.students.dto.AttemptDto;
 import com.testcreation.students.dto.QuestionDto;
 import com.testcreation.students.exception.AttemptException;
 import com.testcreation.students.service.AttemptService;
+import com.testcreation.students.service.ResultService;
 
 @RestController
 @RequestMapping("/attempts")
@@ -25,27 +27,41 @@ public class AttemptController {
 	@Autowired
 	AttemptService service;
 	
+	@Autowired
+	ResultService resultService;
+	
 	@PostMapping("/add")
 	public void addAttempt(@RequestBody AttemptDto attemptDto) throws JsonMappingException, JsonProcessingException {
 		if(service.getQuestionById(attemptDto.getQuestionId())==null) {
 			throw new AttemptException("questionId doesn't exist !");
 		}
 		
-		if(service.getResultById(attemptDto.getResultId()).isEmpty()) {
+		Result result = service.getResultById(attemptDto.getResultId()).isPresent()?service.getResultById(attemptDto.getResultId()).get():null; 
+		
+		if(result==null) {
 			throw new AttemptException("resultId doesn't exist !");
 		}
+
+		if(result.getCompleted()) {
+			throw new AttemptException("Test Ended no more attempts allowed !");
+		}
+		
+		//To update if attempt already exists for a question Id
+		Integer attemptId = -1;
+		if(service.getAttemptByResultIdAndQuestionId(attemptDto.getResultId(), attemptDto.getQuestionId())!=null) {
+			attemptId = service.getAttemptByResultIdAndQuestionId(attemptDto.getResultId(), attemptDto.getQuestionId()).getId();
+		}
+		
 		QuestionDto question = service.getQuestionById(attemptDto.getQuestionId());
 		Boolean correct = question.getAnswerString().equals(attemptDto.getAttemptString());
-		service.addAttempt(new Attempt(attemptDto.getResultId(),attemptDto.getQuestionId(),correct,attemptDto.getAttemptString()));
+		Attempt attempt =new Attempt(attemptDto.getResultId(),attemptDto.getQuestionId(),correct,attemptDto.getAttemptString());
+		
+		//If attempt already exists get id for previous entry and add it to current entry
+		if(attemptId>-1) {
+			attempt.setId(attemptId);
+		}
+		service.addAttempt(attempt);
 	}
-	
-//	@PutMapping("/attempt/{attemptId}")
-//	public void updateAttempt(@PathVariable Integer attemptId) {
-//		Attempt attempt = service.getAttemptById(attemptId).isPresent()?service.getAttemptById(attemptId).get():null;
-//		if(attempt==null) {
-//			throw new AttemptException("Unknown AttemptId !");
-//		}
-//	}
 	
 	@GetMapping("/all")
 	public Iterable<Attempt> getAllAttempts(){

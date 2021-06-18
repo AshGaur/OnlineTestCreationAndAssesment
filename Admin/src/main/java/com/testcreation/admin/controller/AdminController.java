@@ -3,6 +3,8 @@ package com.testcreation.admin.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testcreation.admin.bean.Admin;
 import com.testcreation.admin.exception.AdminException;
 import com.testcreation.admin.exception.StringValidators;
+import com.testcreation.admin.graphql.AdminGraphQLService;
 import com.testcreation.admin.service.AdminService;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/admins")
@@ -26,6 +31,15 @@ public class AdminController {
 	
 	@Autowired
 	StringValidators validator;
+	
+	@Autowired
+	AdminGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
 	
 	@GetMapping("/all")
 	Iterable<Admin> getAllAdmins() {

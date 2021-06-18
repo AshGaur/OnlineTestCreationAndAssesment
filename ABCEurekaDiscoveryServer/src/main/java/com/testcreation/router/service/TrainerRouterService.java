@@ -32,10 +32,8 @@ public class TrainerRouterService {
 	}
 	
 	public List<Trainer> saveTrainers(){
-		return Arrays.asList(new Trainer(null,null, null, "Trainer Service will return in sometime"));
+		return Arrays.asList(new Trainer(-1, "Trainer Service will return in sometime"));
 	}
-	
-
 
 	public Trainer getTrainerById(Integer id) {
 		String url = "http://localhost:8082/trainers/"+id.toString();
@@ -61,17 +59,17 @@ public class TrainerRouterService {
 	}
 	
 	 public ResponseEntity<String> updateTrainer(String theTrainer,Integer id) {
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			HttpEntity<String> request = new HttpEntity<>(theTrainer, headers);
-			String url = "http://localhost:8082/trainers/update/"+id.toString();
-			return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
-		}
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>(theTrainer, headers);
+		String url = "http://localhost:8082/trainers/update/"+id.toString();
+		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+	}
 	 
 	 public ResponseEntity<String> updateTrainer(Integer subscriptionId,Integer id) {
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			HttpEntity<String> request = new HttpEntity<>("", headers);
-			String url = "http://localhost:8082/trainers/"+id.toString()+"/subscription/"+subscriptionId.toString();
-			return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
-		}
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> request = new HttpEntity<>("", headers);
+		String url = "http://localhost:8082/trainers/"+id.toString()+"/subscription/"+subscriptionId.toString();
+		return restTemplate.exchange(url,HttpMethod.PUT ,request, String.class);
+	}
 }
 	

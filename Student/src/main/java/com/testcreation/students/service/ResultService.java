@@ -57,6 +57,10 @@ public class ResultService {
 		}
 	}
 
+	public List<Result> getResultsByTestId(Integer testId) {
+		return repo.findByTestId(testId);
+	}
+
 //	public Subscription getSubscriptionById(Integer subscriptionId) {
 //		String url = "http://localhost:8080/";
 //		return restTemplate.getForObject(url, Subscription.class);

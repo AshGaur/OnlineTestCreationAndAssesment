@@ -11,4 +11,6 @@ public interface ResultRepository extends CrudRepository<Result, Integer> {
 	List<Result> findByStudentId(Integer studentId);
 
 	List<Result> findByStudentIdAndTestId(Integer studentId, Integer testId);
+
+	List<Result> findByTestId(Integer testId);
 }
