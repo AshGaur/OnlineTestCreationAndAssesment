@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +14,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.testcreation.trainer.bean.Question;
 import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.exception.TrainerException;
+import com.testcreation.trainer.graphql.QuestionGraphQLService;
 import com.testcreation.trainer.service.QuestionService;
 import com.testcreation.trainer.service.TestService;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/questions")
@@ -29,6 +35,15 @@ public class QuestionController {
 	@Autowired
 	TestService testService;
 	
+	@Autowired
+	QuestionGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
+	
 	@GetMapping("/all")
 	Iterable<Question> getAllQuestions(){
 		return questionService.getAllQuestions();
@@ -37,9 +52,9 @@ public class QuestionController {
 	//Get All Questions by TestID
 	@GetMapping("/test/{testId}")
 	List<Question> getAllQuestionsByTestId(@PathVariable Integer testId) {
-		if(questionService.getAllQuestionsByTestId(testId).size()==0)
-			throw new TrainerException("No Questions present for the given TestID !"); 
-		return questionService.getAllQuestionsByTestId(testId);
+//		if(questionService.getQuestionsByTestId(testId).size()==0)
+//			throw new TrainerException("No Questions present for the given TestID !"); 
+		return questionService.getQuestionsByTestId(testId);
 	}
 	
 	//Get Question by questionID
@@ -130,7 +145,7 @@ public class QuestionController {
 		if(test==null) {
 			throw new TestException("Unknown test Id !");
 		}
-		if(questionService.getAllQuestionsByTestId(testId).size()==0)
+		if(questionService.getQuestionsByTestId(testId).size()==0)
 			throw new TrainerException("No Questions Present across testId to delete !");
 		test.setMaxMarks(0.0);
 		questionService.deleteAllQuestionsByTestId(testId);

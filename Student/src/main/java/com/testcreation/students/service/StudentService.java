@@ -30,7 +30,7 @@ public class StudentService {
 	}
 	
 	
-	public List<Student> getStudentBySubscriptionId(Integer subscriptionId) {
+	public List<Student> getStudentsBySubscriptionId(Integer subscriptionId) {
 		return repo.findBySubscriptionId(subscriptionId);
 	}
 

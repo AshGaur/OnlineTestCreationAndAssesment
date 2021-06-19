@@ -1,8 +1,9 @@
-package com.testcreation.router.graphql;
+package com.testcreation.students.graphql;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -11,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Question;
-import com.testcreation.router.service.QuestionRouterService;
+import com.testcreation.students.bean.Result;
+import com.testcreation.students.service.ResultService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -23,12 +24,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class QuestionGraphQLService {
+public class ResultGraphQLService {
 
 	@Autowired
-	QuestionRouterService service;
+	ResultService service;
 	
-	@Value("classpath:questions.graphql")
+	@Value("classpath:results.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -45,9 +46,10 @@ public class QuestionGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allQuestions",(DataFetcher<List<Question>>)(environment)-> service.getAllQuestions())
-                        .dataFetcher("question",(DataFetcher<Question>)(environment)-> service.getQuestionById(environment.getArgument("id")))
-                        .dataFetcher("questions",(DataFetcher<List<Question>>)(environment)-> service.getQuestionsByTestId(environment.getArgument("testId")))
+                        .dataFetcher("allResults",(DataFetcher<Iterable<Result>>)(environment)-> service.getAllResults())
+                        .dataFetcher("result",(DataFetcher<Optional<Result>>)(environment)-> service.getResultById(environment.getArgument("id")))
+                        .dataFetcher("results",(DataFetcher<List<Result>>)(environment)-> service.getResultsByStudentId(environment.getArgument("studentId")))
+                        .dataFetcher("resultByStudentAndTest",(DataFetcher<Result>)(environment)-> service.getResultByStudentIdAndTestId(environment.getArgument("resultId"),environment.getArgument("studentId")))
                  )
                 .build();
     }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,20 +17,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
 import com.testcreation.students.bean.Attempt;
 import com.testcreation.students.bean.Question;
 import com.testcreation.students.bean.Result;
 import com.testcreation.students.bean.Student;
 import com.testcreation.students.bean.Subscription;
 import com.testcreation.students.bean.Test;
-import com.testcreation.students.dto.ResultDto;
 import com.testcreation.students.exception.StudentException;
 import com.testcreation.students.exception.SubscriptionValidation;
+import com.testcreation.students.graphql.ResultGraphQLService;
 import com.testcreation.students.service.AttemptService;
 import com.testcreation.students.service.ResultService;
 import com.testcreation.students.service.StudentService;
+
+import graphql.ExecutionResult;
 
 
 @RestController
@@ -51,9 +53,18 @@ public class ResultController {
 	
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
+	@Autowired
+	ResultGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
+	
 	@GetMapping("/all")
-	public Iterable<Result> getAllResult() {
-		return service.getAllResult();
+	public Iterable<Result> getAllResults() {
+		return service.getAllResults();
 	}
 	
 	@GetMapping("/{id}")

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +28,11 @@ import com.testcreation.students.bean.Student;
 import com.testcreation.students.bean.Subscription;
 import com.testcreation.students.exception.StringValidators;
 import com.testcreation.students.exception.StudentException;
-import com.testcreation.students.exception.ValidationException;
+import com.testcreation.students.graphql.StudentGraphQLService;
 import com.testcreation.students.service.StudentService;
 //import com.testcreation.trainer.bean.Trainer;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/students")
@@ -43,6 +47,15 @@ public class StudentController {
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
 	Calendar calendar = Calendar.getInstance();
+	
+	@Autowired
+	StudentGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
 	
 	@GetMapping("/all")
 	Iterable<Student> getAllStudents() {
@@ -59,11 +72,11 @@ public class StudentController {
 	
 
 	@GetMapping("/subscription/{subscriptionId}")
-	List<Student> getStudentBySubscriptionId(@PathVariable Integer subscriptionId){
-		if(service.getStudentBySubscriptionId(subscriptionId).isEmpty()){
-			throw new StudentException("student id dosent exist");
-		}
-		return service.getStudentBySubscriptionId(subscriptionId);
+	List<Student> getStudentsBySubscriptionId(@PathVariable Integer subscriptionId){
+//		if(service.getStudentsBySubscriptionId(subscriptionId).size()==0){
+//			throw new StudentException("No students have this subscription !");
+//		}
+		return service.getStudentsBySubscriptionId(subscriptionId);
 	}
 	
 	//Get a new subscription

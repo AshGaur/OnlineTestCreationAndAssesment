@@ -1,8 +1,9 @@
-package com.testcreation.router.graphql;
+package com.testcreation.trainer.graphql;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -11,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Category;
-import com.testcreation.router.service.CategoryRouterService;
+import com.testcreation.trainer.bean.Question;
+import com.testcreation.trainer.service.QuestionService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -23,12 +24,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class CategoryGraphQLService {
+public class QuestionGraphQLService {
 
 	@Autowired
-	CategoryRouterService categoryRouterService;
+	QuestionService service;
 	
-	@Value("classpath:categories.graphql")
+	@Value("classpath:questions.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -45,7 +46,9 @@ public class CategoryGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allCategories",(DataFetcher<List<Category>>)(environment)-> categoryRouterService.getAllCategories())
+                        .dataFetcher("allQuestions",(DataFetcher<Iterable<Question>>)(environment)-> service.getAllQuestions())
+                        .dataFetcher("question",(DataFetcher<Optional<Question>>)(environment)-> service.getQuestionById(environment.getArgument("id")))
+                        .dataFetcher("questions",(DataFetcher<List<Question>>)(environment)-> service.getQuestionsByTestId(environment.getArgument("testId")))
                  )
                 .build();
     }
@@ -53,4 +56,5 @@ public class CategoryGraphQLService {
 	public GraphQL getGraphQL() {
 		return graphQL;
 	}
+	
 }

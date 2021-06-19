@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,10 @@ import com.testcreation.trainer.bean.Subscription;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.exception.StringValidators;
 import com.testcreation.trainer.exception.TrainerException;
+import com.testcreation.trainer.graphql.TrainerGraphQLService;
 import com.testcreation.trainer.service.TrainerService;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/trainers")
@@ -36,6 +40,15 @@ public class TrainerController {
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
 	Calendar calendar = Calendar.getInstance();
+	
+	@Autowired
+	TrainerGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
 	
 	// Get all trainers
 	@GetMapping("/all")
@@ -54,9 +67,9 @@ public class TrainerController {
 	// Get trainers by subscription id
 	@GetMapping("/subscription/{subscriptionId}")
 	List<Trainer> getTrainerBySubscriptionId(@PathVariable Integer subscriptionId) {
-		if(service.getTrainerBySubscriptionId(subscriptionId).isEmpty())
-			throw new TrainerException("subscription ID doesn't exist or no trainer found related to this subscription");
-		return service.getTrainerBySubscriptionId(subscriptionId);
+//		if(service.getTrainersBySubscriptionId(subscriptionId).size()==0)
+//			throw new TrainerException("subscription ID doesn't exist or no trainer found related to this subscription");
+		return service.getTrainersBySubscriptionId(subscriptionId);
 	}
 	
 	@GetMapping("/getsub/{subscriptionId}")

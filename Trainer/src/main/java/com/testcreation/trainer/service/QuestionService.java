@@ -23,7 +23,7 @@ public class QuestionService {
 		return questionRepo.findAll();
 	}
 	
-	public List<Question> getAllQuestionsByTestId(Integer testId) {
+	public List<Question> getQuestionsByTestId(Integer testId) {
 		return questionRepo.findByTestId(testId);
 	}
 	

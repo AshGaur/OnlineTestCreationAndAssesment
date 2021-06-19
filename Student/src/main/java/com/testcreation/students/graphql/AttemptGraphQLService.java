@@ -1,4 +1,4 @@
-package com.testcreation.router.graphql;
+package com.testcreation.students.graphql;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Student;
-import com.testcreation.router.bean.Subscription;
-import com.testcreation.router.service.StudentRouterService;
-import com.testcreation.router.service.SubscriptionRouterService;
+import com.testcreation.students.bean.Attempt;
+import com.testcreation.students.service.AttemptService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -25,12 +23,12 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class SubscriptionGraphQLService {
+public class AttemptGraphQLService {
 
 	@Autowired
-	SubscriptionRouterService subscriptionRouterService;
-		
-	@Value("classpath:subscriptions.graphql")
+	AttemptService service;
+	
+	@Value("classpath:attempts.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
@@ -47,9 +45,9 @@ public class SubscriptionGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allSubscription",(DataFetcher<List<Subscription>>)(environment)-> subscriptionRouterService.getAllSubcription())
-                        .dataFetcher("subscription", (DataFetcher<Subscription>)(environment)->subscriptionRouterService.getSubscriptionById(environment.getArgument("id")))
-          
+                        .dataFetcher("allAttempts",(DataFetcher<Iterable<Attempt>>)(environment)-> service.getAllAttempts())
+                        .dataFetcher("attemptsByResult", (DataFetcher<List<Attempt>>)(environment)->service.getAttemptsByResultId(environment.getArgument("resultId")))
+                        .dataFetcher("attemptByResultAndQuestion", (DataFetcher<Attempt>)(environment)->service.getAttemptByResultIdAndQuestionId(environment.getArgument("resultId"), environment.getArgument("questionId")))
                  )
                 .build();
     }
@@ -59,6 +57,3 @@ public class SubscriptionGraphQLService {
 	}
 	
 }
-
-	
-

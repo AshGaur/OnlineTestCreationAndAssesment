@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.testcreation.students.bean.Attempt;
-import com.testcreation.students.bean.Question;
 import com.testcreation.students.bean.Result;
 import com.testcreation.students.dao.AttemptRepository;
 import com.testcreation.students.dao.ResultRepository;

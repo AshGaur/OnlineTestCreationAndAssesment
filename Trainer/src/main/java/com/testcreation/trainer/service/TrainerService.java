@@ -40,8 +40,7 @@ public class TrainerService {
 		  trainerRepo.deleteById(id);
 	}
 
-	public List<Trainer> getTrainerBySubscriptionId(Integer id) {
-		
+	public List<Trainer> getTrainersBySubscriptionId(Integer id) {
 		 return trainerRepo.findBySubscriptionId(id);
 	}
 

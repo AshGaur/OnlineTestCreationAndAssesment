@@ -1,8 +1,9 @@
-package com.testcreation.router.graphql;
+package com.testcreation.trainer.graphql;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -11,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Test;
-import com.testcreation.router.service.TestRouterService;
+import com.testcreation.trainer.bean.Test;
+import com.testcreation.trainer.service.TestService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -26,7 +27,7 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 public class TestGraphQLService {
 
 	@Autowired
-	TestRouterService service;
+	TestService service;
 	
 	@Value("classpath:tests.graphql")
 	Resource resource;
@@ -45,11 +46,14 @@ public class TestGraphQLService {
 	private RuntimeWiring buildRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allTests",(DataFetcher<List<Test>>)(environment)-> service.getAllTests())
-                        .dataFetcher("test", (DataFetcher<Test>)(environment)->service.getTestById(environment.getArgument("id")))
+                        .dataFetcher("allTests",(DataFetcher<Iterable<Test>>)(environment)-> service.getAllTests())
+                        .dataFetcher("test", (DataFetcher<Optional<Test>>)(environment)->service.getTestById(environment.getArgument("id")))
                         .dataFetcher("tests", (DataFetcher<List<Test>>)(environment)->service.getTestsByCategoryName(environment.getArgument("category")))
                         .dataFetcher("testsByTrainer", (DataFetcher<List<Test>>)(environment)->service.getTestsByTrainerId(environment.getArgument("id")))
                  )
+//                .type("Test",typeWiring -> typeWiring
+//                		.dataFetcher("studentCount",(DataFetcher<Integer>)(environment)-> service.getStudentCountByTestId(environment.getArgument("testId")))
+//                )
                 .build();
     }
 

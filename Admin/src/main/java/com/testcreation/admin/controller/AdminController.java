@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.admin.bean.Admin;
@@ -38,6 +37,8 @@ public class AdminController {
 	@PostMapping
 	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
 		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		System.out.println("GraphQL Errors: "+executionResult.getErrors());
+		System.out.println("execResult:"+executionResult);
 		return new ResponseEntity<>(executionResult,HttpStatus.OK);
 	}
 	
@@ -54,7 +55,6 @@ public class AdminController {
 	}
 	
 	@PostMapping("/add")
-//	@RequestMapping(value="/add", method = RequestMethod.POST, headers = "Accept=application/json")
 	public String addAdmin(@RequestBody Admin theAdmin) {
 		validator.validateEmail(theAdmin.getEmail());
 		validator.validatePassword(theAdmin.getPassword());

@@ -1,8 +1,10 @@
-package com.testcreation.router.graphql;
+package com.testcreation.students.graphql;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -11,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.testcreation.router.bean.Trainer;
-import com.testcreation.router.service.TrainerRouterService;
+import com.testcreation.students.bean.Student;
+import com.testcreation.students.service.StudentService;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -23,35 +25,34 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 @Service
-public class TrainerGraphQLService {
+public class StudentGraphQLService {
 
 	@Autowired
-	TrainerRouterService trainerRouterService;
+	StudentService service;
 	
-	@Value("classpath:trainers.graphql")
+	@Value("classpath:students.graphql")
 	Resource resource;
 	
 	private GraphQL graphQL;
 	
-	private RuntimeWiring buildRuntimeWiring() {
-        return RuntimeWiring.newRuntimeWiring()
-                .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allTrainers",(DataFetcher<List<Trainer>>)(environment)-> trainerRouterService.getAllTrainers())
-                        .dataFetcher("trainer", (DataFetcher<Trainer>)(environment)->trainerRouterService.getTrainerById(environment.getArgument("id")))
-                        .dataFetcher("trainers",(DataFetcher<List<Trainer>>)(environment)-> trainerRouterService.getTrainersBySubscriptionId(environment.getArgument("subId")))
-                )
-                .build();
-    }
-	
 	@PostConstruct
 	private void loadSchema() throws IOException {
 		File schemaFile = resource.getFile();
-		
 		TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
 		RuntimeWiring wiring = buildRuntimeWiring();
         GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
         graphQL = GraphQL.newGraphQL(schema).build();
 	}
+	
+	private RuntimeWiring buildRuntimeWiring() {
+        return RuntimeWiring.newRuntimeWiring()
+                .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("allStudents",(DataFetcher<Iterable<Student>>)(environment)-> service.getAllStudents())
+                        .dataFetcher("student", (DataFetcher<Optional<Student>>)(environment)->service.getStudentById(environment.getArgument("id")))
+                        .dataFetcher("students", (DataFetcher<List<Student>>)(environment)->service.getStudentsBySubscriptionId(environment.getArgument("subId")))
+                 )
+                .build();
+    }
 
 	public GraphQL getGraphQL() {
 		return graphQL;

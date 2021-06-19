@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +20,12 @@ import com.testcreation.trainer.bean.Test;
 import com.testcreation.trainer.bean.Trainer;
 import com.testcreation.trainer.exception.SubscriptionValidation;
 import com.testcreation.trainer.exception.TestException;
+import com.testcreation.trainer.graphql.QuestionGraphQLService;
+import com.testcreation.trainer.graphql.TestGraphQLService;
 import com.testcreation.trainer.service.TestService;
 import com.testcreation.trainer.service.TrainerService;
+
+import graphql.ExecutionResult;
 
 @RestController
 @RequestMapping("/tests")
@@ -33,6 +39,15 @@ public class TestController {
 	
 	@Autowired
 	SubscriptionValidation subValidator;
+	
+	@Autowired
+	TestGraphQLService graphQLService;
+	
+	@PostMapping
+	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
+		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
+		return new ResponseEntity<>(executionResult,HttpStatus.OK);
+	}
 	
 	@GetMapping("/all")
 	Iterable<Test> getAllTests() {

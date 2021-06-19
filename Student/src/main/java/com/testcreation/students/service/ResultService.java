@@ -19,7 +19,7 @@ public class ResultService {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	public Iterable<Result> getAllResult() {
+	public Iterable<Result> getAllResults() {
 		return repo.findAll();                          
 	}
 	
