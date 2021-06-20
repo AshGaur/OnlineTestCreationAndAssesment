@@ -11,6 +11,11 @@ public class Admin implements User{
 	String roles = "ROLE_ADMIN";
 	
 	@Override
+	public String toString() {
+		return "Admin [id=" + id + ", email=" + email + ", password=" + password + ", roles=" + roles + "]";
+	}
+
+	@Override
 	public boolean isActive() {
 		return true;
 	}

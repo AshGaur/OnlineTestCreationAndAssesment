@@ -13,6 +13,12 @@ public class Trainer implements User{
 	String roles = "ROLE_TRAINER";
 	
 	@Override
+	public String toString() {
+		return "Trainer [id=" + id + ", email=" + email + ", password=" + password + ", phone=" + phone + ", roles="
+				+ roles + "]";
+	}
+
+	@Override
 	public Integer getId() {
 		return this.id;
 	}

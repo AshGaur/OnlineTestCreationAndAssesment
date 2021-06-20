@@ -13,6 +13,12 @@ public class Student implements User{
 	String roles = "ROLE_STUDENT";
 	
 	@Override
+	public String toString() {
+		return "Student [id=" + id + ", email=" + email + ", password=" + password + ", phone=" + phone + ", roles="
+				+ roles + "]";
+	}
+
+	@Override
 	public Integer getId() {
 		return this.id;
 	}

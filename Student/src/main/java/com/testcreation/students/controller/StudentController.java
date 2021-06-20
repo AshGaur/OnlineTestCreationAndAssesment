@@ -121,6 +121,10 @@ public class StudentController {
 		//Subscription values setting for Trainer
 		Subscription subscription = service.getSubscriptionById(subscriptionId);
 		
+		if(subscription.getRole().toLowerCase().equals("trainer")) {
+			throw new StudentException("Subscription not for students !");
+		}
+		
 		//Set endService Date
 		calendar.add(Calendar.DATE, subscription.getServiceUsageLimit());
 		theStudent.setEndServiceDate(formatter.format(calendar.getTime()));

@@ -23,10 +23,12 @@ public class MyUserDetailsService implements UserDetailsService {
 		
 		if(user.isEmpty()) {
 			user = service.getStudentByEmailOrPhone(username);
+			user = user.get().getId()==null?Optional.empty():user;
 		}
 		
 		if(user.isEmpty()) {
 			user = service.getTrainerByEmailOrPhone(username);
+			user = user.get().getId()==null?Optional.empty():user;
 		}
 		
 		user.orElseThrow(() -> new UsernameNotFoundException("User not found : " + username));

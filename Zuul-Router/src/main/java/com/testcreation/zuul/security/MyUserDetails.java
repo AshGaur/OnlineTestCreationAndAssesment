@@ -20,7 +20,8 @@ public class MyUserDetails implements UserDetails {
 	List<SimpleGrantedAuthority> authorities;
 	
 	public MyUserDetails(User theUser) {
-		this.username = theUser.getEmail();
+		System.out.println("MYUSERDETAILS :"+theUser);
+		this.username = theUser.getPhone()==null?theUser.getEmail():theUser.getPhone();
 		this.password = theUser.getPassword();
 		this.active = theUser.isActive();
 		this.authorities = Arrays.stream(theUser.getRoles().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
