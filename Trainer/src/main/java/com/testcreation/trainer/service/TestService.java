@@ -53,7 +53,7 @@ public class TestService {
 	}
 
 	public Integer getStudentCountByTestId(Integer testId) {
-		String url = "http://localhost:8081/results/test/"+testId;
+		String url = "http://STUDENT-MICROSERVICE/results/test/"+testId;
 		return Arrays.asList(restTemplate.getForObject(url, Result[].class)).size();
 	}
 }

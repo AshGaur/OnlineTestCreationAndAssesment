@@ -56,7 +56,9 @@ public class AttemptService {
 	}
 	
 	public QuestionDto getQuestionById(Integer questionId) throws JsonMappingException, JsonProcessingException {
-		String respString = restTemplate.getForObject("http://localhost:8082/questions/"+questionId.toString(), String.class);
+//		String url = "http://localhost:8082/questions/"+questionId.toString();
+		String url = "http://TRAINER-MICROSERVICE/questions/"+questionId.toString();
+		String respString = restTemplate.getForObject(url, String.class);
 		if(respString.equals("Unknown Question ID !")) {
 			return null;
 		}

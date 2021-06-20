@@ -50,13 +50,19 @@ public class StudentService {
 		repo.deleteById(id);	
 	}
 
+	public Optional<Student> getByEmailOrPhone(String username) {
+		return repo.findByEmailOrPhone(username,username);
+	}
+	
 	public Subscription getSubscriptionById(Integer subscriptionId) {
-		String url = "http://localhost:8080/subscriptions/"+subscriptionId;
+		String url = "http://ADMIN-MICROSERVICE/subscriptions/"+subscriptionId;
 		return restTemplate.getForObject(url, Subscription.class);
 	}
 	
 	public Test getTestById(Integer testId) {
-		String url = "http://localhost:8082/tests/"+testId;
+		String url = "http://TRAINER-MICROSERVICE/tests/"+testId;
 		return restTemplate.getForObject(url, Test.class);
 	}
+
+	
 }

@@ -14,4 +14,6 @@ public interface TrainerRepository extends CrudRepository<Trainer, Integer> {
 
 	List<Trainer> findBySubscriptionId(Integer id);
 
+	Optional<Trainer> findByEmailOrPhone(String email, String phone);
+
 }

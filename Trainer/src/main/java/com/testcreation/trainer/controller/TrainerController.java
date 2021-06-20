@@ -64,6 +64,11 @@ public class TrainerController {
 		return service.getTrainerById(id);
 	}
 	
+	@GetMapping("/byEmailOrPhone/{username}")
+	Optional<Trainer> getByEmailOrPhone(@PathVariable String username){
+		return service.getByEmailOrPhone(username);
+	}
+	
 	// Get trainers by subscription id
 	@GetMapping("/subscription/{subscriptionId}")
 	List<Trainer> getTrainerBySubscriptionId(@PathVariable Integer subscriptionId) {
@@ -78,7 +83,7 @@ public class TrainerController {
 	}
 	
 	//Get a new subscription (update subscription id for trainer)
-	@PutMapping("/{id}/subscription/{subscriptionId}")
+	@PutMapping("/update/{id}/subscription/{subscriptionId}")
 	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
 		Trainer trainer = service.getTrainerById(id).isPresent()?service.getTrainerById(id).get():null;
 		if(trainer == null) {

@@ -10,26 +10,30 @@ import com.testcreation.admin.dao.AdminRepository;
 @Service
 public class AdminService {
 	@Autowired
-	AdminRepository rep;
+	AdminRepository repo;
 	
 	public Iterable<Admin> getAllAdmins() {
-		return rep.findAll();
+		return repo.findAll();
 	}
 	
 	public Optional<Admin> getAdminById(Integer id) {
-		return rep.findById(id);
+		return repo.findById(id);
 	}
 
 	public void addAdmin(Admin theAdmin) {
-		rep.save(theAdmin);
+		repo.save(theAdmin);
 	}
 
 	public void updateAdmin(Admin theAdmin) {
-		rep.save(theAdmin);	
+		repo.save(theAdmin);	
 	}
 
 	public void deleteAdmin(Integer id) {
-		rep.deleteById(id);	
+		repo.deleteById(id);	
+	}
+	
+	public Optional<Admin> getAdminByEmail(String email){
+		return repo.findByEmail(email);
 	}
 	
 }

@@ -47,6 +47,11 @@ public class AdminController {
 		return service.getAllAdmins();
 	}
 	
+	@GetMapping("/byEmail/{email}")
+	Optional<Admin> getAdminByEmail(@PathVariable String email){
+		return service.getAdminByEmail(email);
+	}
+	
 	@GetMapping("/{id}")
 	Optional<Admin> getAdminById(@PathVariable Integer id){
 		if(service.getAdminById(id).isEmpty())

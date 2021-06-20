@@ -70,6 +70,10 @@ public class StudentController {
 		return service.getStudentById(id).get();
 	}
 	
+	@GetMapping("/byEmailOrPhone/{username}")
+	public Optional<Student> getByEmailOrPhone(@PathVariable String username){
+		return service.getByEmailOrPhone(username);
+	}
 
 	@GetMapping("/subscription/{subscriptionId}")
 	List<Student> getStudentsBySubscriptionId(@PathVariable Integer subscriptionId){
@@ -80,7 +84,7 @@ public class StudentController {
 	}
 	
 	//Get a new subscription
-	@PutMapping("/{id}/subscription/{subscriptionId}")
+	@PutMapping("/update/{id}/subscription/{subscriptionId}")
 	void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
 		Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
 		if(student==null) {
