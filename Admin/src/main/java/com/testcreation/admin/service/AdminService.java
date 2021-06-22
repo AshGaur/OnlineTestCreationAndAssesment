@@ -32,9 +32,5 @@ public class AdminService {
 		repo.deleteById(id);	
 	}
 	
-	public Optional<Admin> getAdminByEmail(String email){
-		return repo.findByEmail(email);
-	}
-	
 }
 

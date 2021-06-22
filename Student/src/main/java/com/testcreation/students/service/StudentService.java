@@ -41,18 +41,11 @@ public class StudentService {
 	public void updateStudent(Student theStudent) {
 		repo.save(theStudent);	
 	}
-	
-	public Optional<Student> updateStudentById(Integer subscriptionId) {
-		return repo.save(subscriptionId);	
-	}
 
 	public void deleteStudent(Integer id) {
 		repo.deleteById(id);	
 	}
 
-	public Optional<Student> getByEmailOrPhone(String username) {
-		return repo.findByEmailOrPhone(username,username);
-	}
 	
 	public Subscription getSubscriptionById(Integer subscriptionId) {
 		String url = "http://ADMIN-MICROSERVICE/subscriptions/"+subscriptionId;

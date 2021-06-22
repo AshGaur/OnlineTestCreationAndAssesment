@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +20,12 @@ public class Admin {
 	@Column(updatable = false)
 	Integer id;
 	
-	@Column(unique=true,nullable=false)
-	String email;
+	String name;
 	
-	@Column(nullable=false)
-	String password;
+	public Admin(String name) {
+		this.name = name;
+	}
+	
+	@OneToOne
+	User user;
 }

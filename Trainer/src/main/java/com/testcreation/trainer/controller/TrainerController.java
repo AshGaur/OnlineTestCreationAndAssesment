@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.trainer.bean.Subscription;
 import com.testcreation.trainer.bean.Trainer;
+import com.testcreation.trainer.bean.User;
 import com.testcreation.trainer.exception.StringValidators;
 import com.testcreation.trainer.exception.TrainerException;
 import com.testcreation.trainer.graphql.TrainerGraphQLService;
@@ -64,11 +65,6 @@ public class TrainerController {
 		return service.getTrainerById(id);
 	}
 	
-	@GetMapping("/byEmailOrPhone/{username}")
-	Optional<Trainer> getByEmailOrPhone(@PathVariable String username){
-		return service.getByEmailOrPhone(username);
-	}
-	
 	// Get trainers by subscription id
 	@GetMapping("/subscription/{subscriptionId}")
 	List<Trainer> getTrainerBySubscriptionId(@PathVariable Integer subscriptionId) {
@@ -94,22 +90,15 @@ public class TrainerController {
 	}
 	
 	// Add trainer to a subscription id
-	@PostMapping("/add/subscription/{subscriptionId}")
-	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable Integer subscriptionId){//, @PathVariable int subscriptionId){
-		boolean isRequired = true;
-		if(theTrainer.getEmail()!=null) {
-			validator.validateEmail(theTrainer.getEmail());
-			isRequired = false;
-		}
-		if(theTrainer.getPhone()!=null) {
-			validator.validatePhone(theTrainer.getPhone());
-			isRequired = false;
-		}
-		if(isRequired) {
-			throw new TrainerException("Atleast one among phone or email is required !");
-		}
+	@PostMapping("/add/subscription/{subscriptionId}/email/{email}")
+	void addTrainer(@RequestBody Trainer theTrainer , @PathVariable Integer subscriptionId,@PathVariable String email){
 		validator.validateName(theTrainer.getName());
-		validator.validatePassword(theTrainer.getPassword());
+		
+		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		
+		if(subscription==null) {
+			throw new TrainerException("Unknown Subscription !");
+		}
 		boolean paymentSuccessful = true;
 		if(subscriptionId!=1 && paymentSuccessful) {
 			theTrainer.setSubscription(new Subscription(subscriptionId));
@@ -118,8 +107,7 @@ public class TrainerController {
 			theTrainer.setSubscription(new Subscription(1));
 		}
 		calendar.setTime(new Date());
-		//Subscription values setting for Trainer
-		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		//Subscription values setting for Trainer	
 		
 		if(subscription.getRole().toLowerCase().equals("student")){
 			throw new TrainerException("Subscription not for trainers !");
@@ -132,6 +120,7 @@ public class TrainerController {
 		//Set tests to be created
 		theTrainer.setTestsLeft(subscription.getTestNumberLimit());
 		
+		theTrainer.setUser(new User(email));
 		service.addTrainer(theTrainer);
 	}
 	

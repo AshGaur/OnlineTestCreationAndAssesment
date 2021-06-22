@@ -42,11 +42,6 @@ public class TrainerService {
 	public List<Trainer> getTrainersBySubscriptionId(Integer id) {
 		 return trainerRepo.findBySubscriptionId(id);
 	}
-
-	public Optional<Trainer> getByEmailOrPhone(String username) {
-		// TODO Auto-generated method stub
-		return trainerRepo.findByEmailOrPhone(username,username);
-	}
 	
 	public Subscription getSubscriptionById(Integer subscriptionId) {
 		String url = "http://ADMIN-MICROSERVICE/subscriptions/"+subscriptionId;

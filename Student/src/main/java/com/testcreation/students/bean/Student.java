@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,20 +28,19 @@ public class Student {
 	
 	private String name;
 	
-	@Column(unique=true)
-	private String email;
-	
-	private String password;
-	
-	@Column(unique=true)
-	private String phone;
-	
 	@ManyToOne
 	Subscription subscription;
+	
+	@OneToOne
+	User user;
 	
 	Integer testsLeft;
 	
 	String endServiceDate;
+	
+	public Student(String name) {
+		this.name = name;
+	}
 	
 	public Student(Integer studentId){
 		this.id = studentId;

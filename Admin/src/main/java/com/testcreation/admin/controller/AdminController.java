@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.admin.bean.Admin;
+import com.testcreation.admin.bean.User;
 import com.testcreation.admin.exception.AdminException;
 import com.testcreation.admin.exception.StringValidators;
 import com.testcreation.admin.graphql.AdminGraphQLService;
@@ -47,11 +48,6 @@ public class AdminController {
 		return service.getAllAdmins();
 	}
 	
-	@GetMapping("/byEmail/{email}")
-	Optional<Admin> getAdminByEmail(@PathVariable String email){
-		return service.getAdminByEmail(email);
-	}
-	
 	@GetMapping("/{id}")
 	Optional<Admin> getAdminById(@PathVariable Integer id){
 		if(service.getAdminById(id).isEmpty())
@@ -59,10 +55,9 @@ public class AdminController {
 		return service.getAdminById(id);
 	}
 	
-	@PostMapping("/add")
-	public String addAdmin(@RequestBody Admin theAdmin) {
-		validator.validateEmail(theAdmin.getEmail());
-		validator.validatePassword(theAdmin.getPassword());
+	@PostMapping("/add/email/{email}")
+	public String addAdmin(@RequestBody Admin theAdmin,@PathVariable String email) {
+		theAdmin.setUser(new User(email));
 		service.addAdmin(theAdmin);
 		return "Admin added successfully !";
 	}

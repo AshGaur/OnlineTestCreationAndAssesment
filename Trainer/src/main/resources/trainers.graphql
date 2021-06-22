@@ -11,10 +11,8 @@ type Query{
 type Trainer{
 	id: Int
 	name: String
-	email: String
-	password: String
-	phone: String
 	subscription: Subscription
+	user:User
 }
 
 
@@ -23,8 +21,16 @@ type Subscription{
 	code: String
 	role: String
 	description: String
-	testCreationLimit: Int
+	testNumberLimit: Int
 	testAvailability: Int
 	serviceUsageLimit: Int
 	price: Float
+}
+
+type User{
+	email:String
+	password:String
+	roles:String
+	phone: String
+	active:Boolean
 }

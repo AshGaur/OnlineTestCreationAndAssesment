@@ -1,15 +1,33 @@
 package com.testcreation.zuul.bean;
 
-public interface User {
-	Integer getId();
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-	String getEmail();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-	String getPhone();
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@Entity(name="users")
+public class User {
+
+	@Id
+	String email;
 	
-	String getPassword();
-
-	String getRoles();
-
-	boolean isActive();
+	@Column(unique=true)
+	private String phone;
+	
+	@Column(nullable=false)
+	String password;
+	
+	@Column(nullable=false)
+	String roles;
+	
+	boolean active;
+	
 }

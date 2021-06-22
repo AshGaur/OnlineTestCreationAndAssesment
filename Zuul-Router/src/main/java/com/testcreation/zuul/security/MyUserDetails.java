@@ -17,11 +17,11 @@ public class MyUserDetails implements UserDetails {
 	String password;
 	Boolean active;
 	
+	
 	List<SimpleGrantedAuthority> authorities;
 	
 	public MyUserDetails(User theUser) {
-		System.out.println("MYUSERDETAILS :"+theUser);
-		this.username = theUser.getPhone()==null?theUser.getEmail():theUser.getPhone();
+		this.username = theUser.getEmail();
 		this.password = theUser.getPassword();
 		this.active = theUser.isActive();
 		this.authorities = Arrays.stream(theUser.getRoles().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
@@ -29,8 +29,11 @@ public class MyUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
 		return this.authorities;
+	}
+
+	public Boolean getActive() {
+		return active;
 	}
 
 	@Override

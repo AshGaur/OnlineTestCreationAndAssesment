@@ -9,6 +9,14 @@ type Query{
 
 type Admin{
 	id: Int
-	email: String
-	password: String
+	name:String
+	user: User
+}
+
+type User{
+	email:String
+	password:String
+	roles:String
+	phone: String
+	active:Boolean
 }

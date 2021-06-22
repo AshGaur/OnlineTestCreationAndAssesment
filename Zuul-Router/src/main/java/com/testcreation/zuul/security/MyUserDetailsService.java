@@ -19,17 +19,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = service.getAdminByEmail(username);
-		
-		if(user.isEmpty()) {
-			user = service.getStudentByEmailOrPhone(username);
-			user = user.get().getId()==null?Optional.empty():user;
-		}
-		
-		if(user.isEmpty()) {
-			user = service.getTrainerByEmailOrPhone(username);
-			user = user.get().getId()==null?Optional.empty():user;
-		}
+		Optional<User> user = service.getUserByEmail(username);
 		
 		user.orElseThrow(() -> new UsernameNotFoundException("User not found : " + username));
 		

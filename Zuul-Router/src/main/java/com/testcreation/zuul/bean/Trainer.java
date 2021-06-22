@@ -1,52 +1,50 @@
 package com.testcreation.zuul.bean;
 
-public class Trainer implements User{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-	Integer id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity(name="trainers")
+public class Trainer {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(updatable = false)
+	private Integer id;
 	
-	String email;
+	private String name;
 	
-	String password;
+	private String endServiceDate;
 	
-	String phone;
+	private Integer testsLeft;
 	
-	String roles = "ROLE_TRAINER";
-	
-	@Override
 	public String toString() {
-		return "Trainer [id=" + id + ", email=" + email + ", password=" + password + ", phone=" + phone + ", roles="
-				+ roles + "]";
-	}
-
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-
-	@Override
-	public String getEmail() {
-		return this.email;
-	}
-
-	@Override
-	public String getPhone() {
-		return this.phone;
-	}
-
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-
-	@Override
-	public String getRoles() {
-		return this.roles;
-	}
-
-	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return true;
+		return String.format("{ \"name\":%s }", this.name);
 	}
 	
+	public Trainer(String name) {
+		this.name = name;
+	}
+	
+	@OneToOne
+	User user;
+	
+	public Trainer(Integer id){
+		this.id = id;
+	}
+	@ManyToOne
+	private Subscription subscription;
 }

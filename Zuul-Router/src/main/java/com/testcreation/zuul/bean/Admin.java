@@ -1,48 +1,31 @@
 package com.testcreation.zuul.bean;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-public class Admin implements User{
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity(name="admins")
+public class Admin {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false)
 	Integer id;
 	
-	String email;
+	String name;
 	
-	String password;
-	
-	String roles = "ROLE_ADMIN";
-	
-	@Override
-	public String toString() {
-		return "Admin [id=" + id + ", email=" + email + ", password=" + password + ", roles=" + roles + "]";
-	}
-
-	@Override
-	public boolean isActive() {
-		return true;
-	}
-
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-
-	@Override
-	public String getEmail() {
-		return this.email;
-	}
-
-	@Override
-	public String getPhone() {
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-
-	@Override
-	public String getRoles() {
-		return this.roles;
+	public Admin(String name) {
+		this.name = name;
 	}
 	
+	@OneToOne
+	User user;
 }

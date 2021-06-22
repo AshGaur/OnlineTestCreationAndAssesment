@@ -1,11 +1,5 @@
 package com.testcreation.students.controller;
 
-import java.beans.IntrospectionException;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.testcreation.students.bean.Student;
 import com.testcreation.students.bean.Subscription;
+import com.testcreation.students.bean.User;
 import com.testcreation.students.exception.StringValidators;
 import com.testcreation.students.exception.StudentException;
 import com.testcreation.students.graphql.StudentGraphQLService;
@@ -69,17 +64,9 @@ public class StudentController {
 		}
 		return service.getStudentById(id).get();
 	}
-	
-	@GetMapping("/byEmailOrPhone/{username}")
-	public Optional<Student> getByEmailOrPhone(@PathVariable String username){
-		return service.getByEmailOrPhone(username);
-	}
 
 	@GetMapping("/subscription/{subscriptionId}")
 	List<Student> getStudentsBySubscriptionId(@PathVariable Integer subscriptionId){
-//		if(service.getStudentsBySubscriptionId(subscriptionId).size()==0){
-//			throw new StudentException("No students have this subscription !");
-//		}
 		return service.getStudentsBySubscriptionId(subscriptionId);
 	}
 	
@@ -94,22 +81,9 @@ public class StudentController {
 		service.updateStudent(student);
 	}
 	
-	@PostMapping("/add/subscription/{subscriptionId}")
-	void addStudent(@RequestBody Student theStudent,@PathVariable Integer subscriptionId) {
-		boolean isRequired = true;
-		if(theStudent.getEmail()!=null) {
-			validator.validateEmail(theStudent.getEmail());
-			isRequired = false;
-		}
-		if(theStudent.getPhone()!=null) {
-			validator.validatePhone(theStudent.getPhone());
-			isRequired = false;
-		}
-		if(isRequired) {
-			throw new StudentException("Atleast one among phone or email is required !");
-		}
+	@PostMapping("/add/subscription/{subscriptionId}/email/{email}")
+	void addStudent(@RequestBody Student theStudent,@PathVariable Integer subscriptionId,@PathVariable String email) {
 		validator.validateName(theStudent.getName());
-		validator.validatePassword(theStudent.getPassword());
 		boolean paymentSuccessful = true;
 		if(subscriptionId!=1 && paymentSuccessful) {
 			theStudent.setSubscription(new Subscription(subscriptionId));
@@ -132,36 +106,18 @@ public class StudentController {
 		//Set tests to be created
 		theStudent.setTestsLeft(subscription.getTestNumberLimit());
 		
+		theStudent.setUser(new User(email));
+		
 		service.addStudent(theStudent);
 	}
 	
 	@PutMapping("/update/{id}")
-	void updateStudent(@RequestBody Student theStudent,@PathVariable int id) throws IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {
+	void updateStudent(@RequestBody Student theStudent,@PathVariable int id){
 		Optional<Student> dbStudent = service.getStudentById(id);
 		if(dbStudent.isEmpty()) {
 			throw new StudentException("No Student Present with provided ID !");
 		}
-		PropertyDescriptor pd;
-		Student existingStudent = dbStudent.get();
-		for(Field updatedField:theStudent.getClass().getDeclaredFields()) {
-			pd = new PropertyDescriptor(updatedField.getName(), Student.class);
-			Method getter = pd.getReadMethod();
-			Method setter = pd.getWriteMethod();
-			for(Field prevField:existingStudent.getClass().getDeclaredFields()) {
-				System.out.println(getter.invoke(theStudent)!=null && prevField.getName().equals(updatedField.getName()));
-				if(getter.invoke(theStudent)!=null && prevField.getName().equals(updatedField.getName())) {
-					switch(updatedField.getName()) {
-						case "name" : validator.validateName(theStudent.getName());break;
-						case "email": validator.validateEmail(theStudent.getEmail());break;
-						case "password": validator.validatePhone(theStudent.getPassword());break;
-						case "phone": validator.validatePhone(theStudent.getPhone());break;
-						case "id": throw new StudentException("id updation not allowed !");
-					}
-					setter.invoke(existingStudent, getter.invoke(theStudent));
-				}
-			}
-		}
-		service.updateStudent(existingStudent);
+		service.updateStudent(theStudent);
 	}
 	
 	@DeleteMapping("/delete/{id}")
