@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.testcreation.zuul.security.jwt.JwtRequestFilter;
 
 @EnableWebSecurity
@@ -29,15 +28,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.csrf().disable()
+		.cors()
+		.and()
+		.csrf()
+		.disable()
 		.authorizeRequests()
+		
 		//Admins
 		.antMatchers("/").permitAll()
-		.antMatchers(HttpMethod.POST,"/login").permitAll()
+		.antMatchers(HttpMethod.POST,"/users/login").permitAll()
 		.antMatchers(HttpMethod.POST,"/users/add").permitAll()
-		.antMatchers(HttpMethod.POST,"/admin/login").permitAll()
-		.antMatchers(HttpMethod.POST,"/trainer/login").permitAll()
-		.antMatchers(HttpMethod.POST,"/student/login").permitAll()
+//		.antMatchers(HttpMethod.POST,"/admin/login").permitAll()
+//		.antMatchers(HttpMethod.POST,"/trainer/login").permitAll()
+//		.antMatchers(HttpMethod.POST,"/student/login").permitAll()
 		.antMatchers(HttpMethod.POST,"/admin-port/admins").hasRole("ADMIN")
 		.antMatchers("/admin-port/admins/all").hasRole("ADMIN")//.permitAll()
 		.antMatchers(HttpMethod.POST,"/admin-port/admins/add").hasRole("ADMIN")
@@ -89,8 +92,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.PUT,"/trainer-port/questions/update/**").hasAnyRole("ADMIN","TRAINER")
 		.antMatchers(HttpMethod.DELETE,"/trainer-port/questions/delete/**").hasAnyRole("ADMIN","TRAINER")
 		.anyRequest().authenticated().and()
+		
 //		.formLogin();	//for spring security form login
 		//for jwt stateless authentication as configured
+//		.csrf().disable()
+		
 		.exceptionHandling().and().sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter,UsernamePasswordAuthenticationFilter.class);
