@@ -79,6 +79,25 @@ public class UserService {
 		return repo.findByEmail(email);
 	}
 	
+	
+	public Optional<Admin> getAdminByEmail(String email){
+		return Optional.ofNullable(
+			restTemplate.getForObject("http://ADMIN-MICROSERVICE/admins/byEmail/"+email, Admin.class)
+		);			
+	}
+	
+	public Optional<Trainer> getTrainerByEmail(String email){
+		return Optional.ofNullable(
+			restTemplate.getForObject("http://TRAINER-MICROSERVICE/trainers/byEmail/"+email, Trainer.class)
+		);			
+	}
+	
+	public Optional<Student> getStudentByEmail(String email){
+		return Optional.ofNullable(
+			restTemplate.getForObject("http://STUDENT-MICROSERVICE/students/byEmail/"+email, Student.class)
+		);			
+	}
+	
 //	public Optional<User> getAdminByEmail(String username,String role){
 //		Optional<User> user = Optional.ofNullable(
 //				restTemplate.getForObject(

@@ -14,4 +14,6 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
 	Optional<Student> findById(Integer id);
 	
 	List<Student> findBySubscriptionId(Integer subscriptionId);
+
+	Student findByUserEmail(String email);
 }

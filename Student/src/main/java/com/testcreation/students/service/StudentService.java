@@ -29,6 +29,9 @@ public class StudentService {
 		return repo.findById(id);
 	}
 	
+	public Student getStudentByEmail(String email){
+		return repo.findByUserEmail(email);
+	}
 	
 	public List<Student> getStudentsBySubscriptionId(Integer subscriptionId) {
 		return repo.findBySubscriptionId(subscriptionId);

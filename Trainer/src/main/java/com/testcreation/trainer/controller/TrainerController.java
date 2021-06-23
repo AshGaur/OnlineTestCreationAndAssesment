@@ -78,6 +78,11 @@ public class TrainerController {
 		return service.getSubscriptionById(subscriptionId);
 	}
 	
+	@GetMapping("byEmail/{email}")
+	public Optional<Trainer> getTrainerByEmail(@PathVariable String email){
+		return service.getTrainerByEmail(email);
+	}
+	
 	//Get a new subscription (update subscription id for trainer)
 	@PutMapping("/update/{id}/subscription/{subscriptionId}")
 	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {

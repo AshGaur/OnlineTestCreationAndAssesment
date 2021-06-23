@@ -55,6 +55,11 @@ public class AdminController {
 		return service.getAdminById(id);
 	}
 	
+	@GetMapping("byEmail/{email}")
+	public Optional<Admin> getAdminByEmail(@PathVariable String email){
+		return service.getAdminByEmail(email);
+	}
+	
 	@PostMapping("/add/email/{email}")
 	public String addAdmin(@RequestBody Admin theAdmin,@PathVariable String email) {
 		theAdmin.setUser(new User(email));

@@ -20,6 +20,10 @@ public class AdminService {
 		return repo.findById(id);
 	}
 
+	public Optional<Admin> getAdminByEmail(String email){
+		return repo.findByUserEmail(email);
+	}
+	
 	public void addAdmin(Admin theAdmin) {
 		repo.save(theAdmin);
 	}

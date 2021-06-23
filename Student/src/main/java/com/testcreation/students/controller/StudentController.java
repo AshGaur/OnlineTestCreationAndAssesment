@@ -70,6 +70,11 @@ public class StudentController {
 		return service.getStudentsBySubscriptionId(subscriptionId);
 	}
 	
+	@GetMapping("/byEmail/{email}")
+	public Student getStudentByEmail(@PathVariable String email){
+		return service.getStudentByEmail(email);
+	}
+	
 	//Get a new subscription
 	@PutMapping("/update/{id}/subscription/{subscriptionId}")
 	void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {

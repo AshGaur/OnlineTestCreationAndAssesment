@@ -48,4 +48,8 @@ public class TrainerService {
 		return restTemplate.getForObject(url, Subscription.class);
 	}
 
+	public Optional<Trainer> getTrainerByEmail(String email) {
+		return trainerRepo.findByUserEmail(email);
+	}
+
 }
