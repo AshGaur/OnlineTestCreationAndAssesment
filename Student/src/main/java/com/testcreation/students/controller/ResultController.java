@@ -23,6 +23,7 @@ import com.testcreation.students.bean.Result;
 import com.testcreation.students.bean.Student;
 import com.testcreation.students.bean.Subscription;
 import com.testcreation.students.bean.Test;
+import com.testcreation.students.dto.TestDto;
 import com.testcreation.students.exception.StudentException;
 import com.testcreation.students.exception.SubscriptionValidation;
 import com.testcreation.students.graphql.ResultGraphQLService;
@@ -51,7 +52,8 @@ public class ResultController {
 	
 	Calendar calendar = Calendar.getInstance();
 	
-	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Autowired
 	ResultGraphQLService graphQLService;
@@ -97,7 +99,7 @@ public class ResultController {
 	}
 	
 	@GetMapping("/getTest/{testId}")
-	public Test getTestById(@PathVariable Integer testId) {
+	public TestDto getTestById(@PathVariable Integer testId) {
 		return studentService.getTestById(testId);
 	}
 	
@@ -110,11 +112,13 @@ public class ResultController {
 		}
 		subValidator.validateStudentSubscription(result, studentId);
 		
+		System.out.println("Subscription Validated !");
+		
 		calendar.setTime(new Date());
 		
-		Test test = studentService.getTestById(testId);
+		TestDto testDto = studentService.getTestById(testId);
 		
-		calendar.add(Calendar.MINUTE, test.getDuration());
+		calendar.add(Calendar.MINUTE, testDto.getDuration());
 		result.setEndString(formatter.format(calendar.getTime()));
 		
 		Student student = studentService.getStudentById(studentId).get();
@@ -142,7 +146,7 @@ public class ResultController {
 		for(Attempt attempt:attemptService.getAttemptsByResultId(id)) {
 			Question question = attempt.getQuestionList().get(0);
 			Double reward = question.getScore();
-			Double penalty = question.getNegativeMarking();
+			Double penalty = attempt.getAttemptString().length()>0?question.getNegativeMarking():0;
 			score+= attempt.getCorrect()?reward:-penalty;
 		}
 		result.setScore(score);

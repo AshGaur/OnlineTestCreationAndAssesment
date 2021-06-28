@@ -49,8 +49,9 @@ public class ResultGraphQLService {
                         .dataFetcher("allResults",(DataFetcher<Iterable<Result>>)(environment)-> service.getAllResults())
                         .dataFetcher("result",(DataFetcher<Optional<Result>>)(environment)-> service.getResultById(environment.getArgument("id")))
                         .dataFetcher("results",(DataFetcher<List<Result>>)(environment)-> service.getResultsByStudentId(environment.getArgument("studentId")))
-                        .dataFetcher("resultByStudentAndTest",(DataFetcher<Result>)(environment)-> service.getResultByStudentIdAndTestId(environment.getArgument("resultId"),environment.getArgument("studentId")))
-                 )
+                        .dataFetcher("resultByStudentAndTest",(DataFetcher<Result>)(environment)-> service.getResultByStudentIdAndTestId(environment.getArgument("studentId"),environment.getArgument("testId")))
+                        .dataFetcher("resultsByTest",(DataFetcher<List<Result>>)(environment)-> service.getResultsByTestId(environment.getArgument("testId")))
+                )
                 .build();
     }
 	

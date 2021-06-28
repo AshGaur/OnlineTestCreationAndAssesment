@@ -1,5 +1,6 @@
 package com.testcreation.students.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,10 +79,35 @@ public class StudentController {
 	//Get a new subscription
 	@PutMapping("/update/{id}/subscription/{subscriptionId}")
 	void studentSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
-		Student student = !service.getStudentById(id).isEmpty()?service.getStudentById(id).get():null;
+		Student student = service.getStudentById(id).isPresent()?service.getStudentById(id).get():null;
+		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		
+		if(subscription==null) {
+			throw new StudentException("Subscription Id not found !");
+		}
+		
 		if(student==null) {
 			throw new StudentException("Unknown Student ID !");
 		}
+		try {
+			Date serviceEnd = formatter.parse(student.getEndServiceDate());
+			//if service already ended then days added from current system date else added to the end date
+			calendar.setTime(serviceEnd.after(new Date())?serviceEnd:new Date());
+		} catch (ParseException e) {
+			throw new StudentException("Invalid End date problem !");
+		}
+		
+		if(subscription.getRole().toLowerCase().equals("trainer")){
+			throw new StudentException("Subscription not for trainers !");
+		}
+		
+		//Set endService Date
+		calendar.add(Calendar.DATE, subscription.getServiceUsageLimit());
+		student.setEndServiceDate(formatter.format(calendar.getTime()));
+		
+		//Set tests to be created
+		student.setTestsLeft(student.getTestsLeft()+subscription.getTestNumberLimit());
+		
 		student.setSubscription(new Subscription(subscriptionId));
 		service.updateStudent(student);
 	}
@@ -89,6 +115,13 @@ public class StudentController {
 	@PostMapping("/add/subscription/{subscriptionId}/email/{email}")
 	void addStudent(@RequestBody Student theStudent,@PathVariable Integer subscriptionId,@PathVariable String email) {
 		validator.validateName(theStudent.getName());
+		
+		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		
+		if(subscription==null) {
+			throw new StudentException("Student Id not found !");
+		}
+		
 		boolean paymentSuccessful = true;
 		if(subscriptionId!=1 && paymentSuccessful) {
 			theStudent.setSubscription(new Subscription(subscriptionId));
@@ -97,11 +130,10 @@ public class StudentController {
 		}
 		
 		calendar.setTime(new Date());
-		//Subscription values setting for Trainer
-		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		//Subscription values setting for Student
 		
-		if(subscription.getRole().toLowerCase().equals("trainer")) {
-			throw new StudentException("Subscription not for students !");
+		if(subscription.getRole().toLowerCase().equals("trainer")){
+			throw new StudentException("Subscription not for trainers !");
 		}
 		
 		//Set endService Date

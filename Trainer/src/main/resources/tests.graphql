@@ -4,6 +4,7 @@ schema{
 
 type Query{
 	allTests: [Test]
+	availableTests: [Test]
 	test(id:Int): Test
 	tests(category:String): [Test]
 	testsByTrainer(id:Int): [Test]

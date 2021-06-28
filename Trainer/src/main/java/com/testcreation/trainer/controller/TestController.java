@@ -22,6 +22,7 @@ import com.testcreation.trainer.exception.SubscriptionValidation;
 import com.testcreation.trainer.exception.TestException;
 import com.testcreation.trainer.graphql.QuestionGraphQLService;
 import com.testcreation.trainer.graphql.TestGraphQLService;
+import com.testcreation.trainer.service.QuestionService;
 import com.testcreation.trainer.service.TestService;
 import com.testcreation.trainer.service.TrainerService;
 
@@ -43,6 +44,9 @@ public class TestController {
 	@Autowired
 	TestGraphQLService graphQLService;
 	
+	@Autowired
+	QuestionService questionService;
+	
 	@PostMapping
 	public ResponseEntity<Object> getAllQLAdmins(@RequestBody String query){
 		ExecutionResult executionResult = graphQLService.getGraphQL().execute(query);
@@ -57,7 +61,7 @@ public class TestController {
 	@GetMapping("/{testId}")
 	Optional<Test> getTestByTestId(@PathVariable Integer testId) {
 		if(service.getTestById(testId).isEmpty()) {
-			throw new TestException("No tests found with the entered ID !");
+			throw new TestException("Unknown Test ID !");
 		}
 		return service.getTestById(testId);
 	}
@@ -107,6 +111,7 @@ public class TestController {
 		if(service.getTestById(testId).isEmpty()) {
 			throw new TestException("No tests found with the entered ID !");
 		}
+		questionService.deleteAllQuestionsByTestId(testId);
 		service.deleteTest(testId);
 	}
 	

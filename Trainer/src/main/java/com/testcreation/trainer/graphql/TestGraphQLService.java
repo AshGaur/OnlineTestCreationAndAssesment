@@ -50,7 +50,8 @@ public class TestGraphQLService {
                         .dataFetcher("test", (DataFetcher<Optional<Test>>)(environment)->service.getTestById(environment.getArgument("id")))
                         .dataFetcher("tests", (DataFetcher<List<Test>>)(environment)->service.getTestsByCategoryName(environment.getArgument("category")))
                         .dataFetcher("testsByTrainer", (DataFetcher<List<Test>>)(environment)->service.getTestsByTrainerId(environment.getArgument("id")))
-                 )
+                        .dataFetcher("availableTests", (DataFetcher<List<Test>>)(environment)->service.getAvailableTests())
+                )
 //                .type("Test",typeWiring -> typeWiring
 //                		.dataFetcher("studentCount",(DataFetcher<Integer>)(environment)-> service.getStudentCountByTestId(environment.getArgument("testId")))
 //                )

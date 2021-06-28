@@ -42,7 +42,8 @@ public class SubscriptionValidation {
 			throw new TestException("Date required in proper format 'dd-mm-yyyy hh:mm:ss'");
 		} 
 		
-		if(fromDate.before(new Date()) || toDate.before(fromDate)) {
+		if(toDate.before(fromDate)) {
+//		if(fromDate.before(new Date()) || toDate.before(fromDate)) {
 			throw new TestException("Invalid Dates entered !");
 		}
 		

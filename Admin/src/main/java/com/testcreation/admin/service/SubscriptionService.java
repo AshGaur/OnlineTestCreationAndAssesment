@@ -1,6 +1,10 @@
 package com.testcreation.admin.service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +35,13 @@ public class SubscriptionService {
 	 
 	 public void deleteSubscription(Integer id) {
 		 subscriptionRepo.deleteById(id);
+	 }
+	 
+	 public List<Subscription> getSubscriptionsByRole(String role){
+		 if(role.toLowerCase().equals("admin")) {
+			 return StreamSupport.stream(this.getAllSubscriptions().spliterator(), false)
+					    .collect(Collectors.toList());
+		 }
+		 return subscriptionRepo.findByRole(role);
 	 }
 }

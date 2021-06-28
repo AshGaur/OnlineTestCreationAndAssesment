@@ -12,6 +12,8 @@ type Student{
 	id: Int
 	name: String
 	subscription: Subscription
+	testsLeft:Int
+	endServiceDate:String
 	user:User
 }
 

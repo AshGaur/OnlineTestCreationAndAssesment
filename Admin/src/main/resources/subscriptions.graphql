@@ -5,6 +5,7 @@ schema{
 type Query{
 	allSubscription: [Subscription]
 	subscription(id:Int): Subscription
+	subscriptionsByRole(role:String):[Subscription]
 }
 
 type Subscription{

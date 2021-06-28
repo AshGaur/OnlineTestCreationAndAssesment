@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,9 @@ public class AttemptController {
 	
 	@PostMapping("/add")
 	public void addAttempt(@RequestBody AttemptDto attemptDto) throws JsonMappingException, JsonProcessingException {
+
+		attemptDto.setAttemptString(attemptDto.getAttemptString().toUpperCase());
+		
 		if(service.getQuestionById(attemptDto.getQuestionId())==null) {
 			throw new AttemptException("questionId doesn't exist !");
 		}
@@ -66,7 +70,7 @@ public class AttemptController {
 		}
 		
 		QuestionDto question = service.getQuestionById(attemptDto.getQuestionId());
-		Boolean correct = question.getAnswerString().equals(attemptDto.getAttemptString());
+		Boolean correct = question.getAnswerString().toLowerCase().equals(attemptDto.getAttemptString().toLowerCase());
 		Attempt attempt =new Attempt(attemptDto.getResultId(),attemptDto.getQuestionId(),correct,attemptDto.getAttemptString());
 		
 		//If attempt already exists get id for previous entry and add it to current entry
@@ -75,6 +79,7 @@ public class AttemptController {
 		}
 		service.addAttempt(attempt);
 	}
+	
 	
 	@GetMapping("/all")
 	public Iterable<Attempt> getAllAttempts(){

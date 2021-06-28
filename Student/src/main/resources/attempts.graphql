@@ -12,4 +12,11 @@ type Attempt{
 	id: Int
 	correct: Boolean
 	attemptString: String
+	markedForReview: Boolean
+	questionList: [Question]
+}
+
+type Question{
+	id:Int
+	questionType:String
 }

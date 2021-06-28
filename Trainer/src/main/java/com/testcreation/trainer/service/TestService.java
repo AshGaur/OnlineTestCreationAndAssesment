@@ -1,6 +1,10 @@
 package com.testcreation.trainer.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +24,32 @@ public class TestService {
 	@Autowired
 	RestTemplate restTemplate;
 	
+	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+	
 	public Iterable<Test> getAllTests() {
 		return testRepo.findAll();
 	}
 	
+	public List<Test> getAvailableTests(){
+		List<Test>  available = new ArrayList<>();
+		testRepo.findAll().forEach(test->{
+			Date fromDate = null;
+			Date toDate = null;
+			try {
+				fromDate = formatter.parse(test.getFromDateString());
+				toDate = formatter.parse(test.getToDateString());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Date currentDate = new Date();
+			if(currentDate.after(fromDate) && currentDate.before(toDate)) {
+				available.add(test);
+			}
+		});
+		return available;
+	}
+	 
 	public Optional<Test> getTestById(int id) {
 		return testRepo.findById(id);
 	}

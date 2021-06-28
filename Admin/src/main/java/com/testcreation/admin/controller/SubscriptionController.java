@@ -1,6 +1,7 @@
 package com.testcreation.admin.controller;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +53,16 @@ public class SubscriptionController {
 		return service.getSubscriptionById(id);
 	}
 	
+	@GetMapping("/role/{role}")
+	public List<Subscription> getSubscriptionsByRole(@PathVariable String role){
+		return service.getSubscriptionsByRole(role);
+	}
+	
 	@PostMapping("/add")
 	void addSubscription(@RequestBody Subscription theSubscription){
 		service.addSubscription(theSubscription);
 	}
+	
 	
 	@PutMapping("/update/{id}")
 	void updateSubscription(@RequestBody Subscription theSubscription, @PathVariable Integer id) {

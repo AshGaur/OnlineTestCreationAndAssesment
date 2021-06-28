@@ -22,7 +22,7 @@ public class SubscriptionValidation {
 	public void validateStudentSubscription(Result result,Integer studentId) {
 		Student student = studentService.getStudentById(studentId).isPresent()?studentService.getStudentById(studentId).get():null;
 		if(student==null) {
-			throw new StudentException("Trainer ID not found !");
+			throw new StudentException("Student ID not found !");
 		}
 		
 		//Validating remaining tests

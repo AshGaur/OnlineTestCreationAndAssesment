@@ -2,6 +2,7 @@ package com.testcreation.admin.graphql;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -47,7 +48,7 @@ public class SubscriptionGraphQLService {
                 .type("Query", typeWiring -> typeWiring
                         .dataFetcher("allSubscription",(DataFetcher<Iterable<Subscription>>)(environment)-> service.getAllSubscriptions())
                         .dataFetcher("subscription", (DataFetcher<Optional<Subscription>>)(environment)->service.getSubscriptionById(environment.getArgument("id")))
-          
+                        .dataFetcher("subscriptionsByRole", (DataFetcher<List<Subscription>>)(environment)->service.getSubscriptionsByRole(environment.getArgument("role")))
                  )
                 .build();
     }

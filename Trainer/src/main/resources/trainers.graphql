@@ -12,6 +12,8 @@ type Trainer{
 	id: Int
 	name: String
 	subscription: Subscription
+	endServiceDate:String
+	testsLeft:Int
 	user:User
 }
 

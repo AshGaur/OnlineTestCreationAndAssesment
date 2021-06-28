@@ -35,6 +35,8 @@ public class Attempt {
 	
 	String attemptString;
 	
+	Boolean markedForReview;
+	
 	public Attempt(Integer resultId,Integer questionId,Boolean correct,String attemptString) {
 		this.resultList.add(new Result(resultId));
 		this.questionList.add(new Question(questionId));

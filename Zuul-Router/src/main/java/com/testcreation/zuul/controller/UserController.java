@@ -128,7 +128,7 @@ public class UserController {
 			}
 		}
 		
-		return ResponseEntity.ok(new AuthResponse(userId,jwt,name,role));
+		return ResponseEntity.ok(new AuthResponse(userId,jwt,name,role,authRequest.getUsername()));
 	}
 	
 	@GetMapping("/admin/email/{email}")

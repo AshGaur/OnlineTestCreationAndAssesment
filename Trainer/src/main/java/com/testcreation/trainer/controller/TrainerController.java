@@ -1,5 +1,6 @@
 package com.testcreation.trainer.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.testcreation.trainer.bean.Subscription;
 import com.testcreation.trainer.bean.Trainer;
@@ -84,12 +86,46 @@ public class TrainerController {
 	}
 	
 	//Get a new subscription (update subscription id for trainer)
+//	@PutMapping("/update/{id}/subscription/{subscriptionId}")
+//	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
+//		Trainer trainer = service.getTrainerById(id).isPresent()?service.getTrainerById(id).get():null;
+//		if(trainer == null) {
+//			throw new TrainerException("Unknown Trainer Id !");
+//		}
+//		trainer.setSubscription(new Subscription(subscriptionId));
+//		service.updateTrainer(trainer);
+//	}
+	
 	@PutMapping("/update/{id}/subscription/{subscriptionId}")
 	void trainerSubscription(@PathVariable Integer subscriptionId,@PathVariable Integer id) {
 		Trainer trainer = service.getTrainerById(id).isPresent()?service.getTrainerById(id).get():null;
-		if(trainer == null) {
-			throw new TrainerException("Unknown Trainer Id !");
+		Subscription subscription = service.getSubscriptionById(subscriptionId);
+		
+		if(subscription==null) {
+			throw new TrainerException("Subscription Id not found !");
 		}
+		
+		if(trainer==null) {
+			throw new TrainerException("Unknown Trainer ID !");
+		}
+		try {
+			 Date serviceEnd = formatter.parse(trainer.getEndServiceDate());
+			//if service already ended then days added from current system date else added to the end date
+			calendar.setTime(serviceEnd.after(new Date())?serviceEnd:new Date());
+		} catch (ParseException e) {
+			throw new TrainerException("Invalid End date problem !");
+		}
+		
+		if(subscription.getRole().toLowerCase().equals("student")){
+			throw new TrainerException("Subscription not for students !");
+		}
+		
+		//Set endService Date
+		calendar.add(Calendar.DATE, subscription.getServiceUsageLimit());
+		trainer.setEndServiceDate(formatter.format(calendar.getTime()));
+		
+		//Set tests to be created
+		trainer.setTestsLeft(trainer.getTestsLeft()+subscription.getTestNumberLimit());
 		trainer.setSubscription(new Subscription(subscriptionId));
 		service.updateTrainer(trainer);
 	}
