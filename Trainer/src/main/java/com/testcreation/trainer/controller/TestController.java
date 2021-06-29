@@ -95,14 +95,16 @@ public class TestController {
 		service.addTest(tempTest);
 	}
 
-	@PutMapping("/update/{testId}")
-	void updateTest(@RequestBody Test tempTest, @PathVariable int testId) {
-		if(service.getTestById(testId).isEmpty()) {
+	@PutMapping("/update/{testId}/category/categoryName}")
+	void updateTest(@RequestBody Test tempTest, @PathVariable int testId, @PathVariable String categoryName) {
+		Test test = service.getTestById(testId).isPresent()?service.getTestById(testId).get():null;
+		if(test==null) {
 			throw new TestException("No tests found with the entered ID !");
 		}
-		
 		subValidator.validateTrainerSubscription(tempTest, tempTest.getTrainer().getId());
-		
+		tempTest.setTrainer(new Trainer(test.getTrainer().getId()));
+		tempTest.setId(testId);
+		tempTest.setCategory(new Category(categoryName));
 		service.updateTest(tempTest);
 	}
 			

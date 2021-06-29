@@ -121,6 +121,8 @@ public class QuestionController {
 			 test.setMaxMarks(maxMarks);
 		 }
 		//Update question
+		tempQuestion.setId(questionId);
+		tempQuestion.setTest(new Test(question.getTest().getId()));
 		questionService.updateQuestion(tempQuestion);
 	}
 	
