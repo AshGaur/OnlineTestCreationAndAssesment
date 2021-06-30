@@ -157,6 +157,7 @@ public class ResultController {
 	void deleteResult(@PathVariable Integer id) {
 		if(service.getResultById(id).isEmpty())
 			throw new StudentException("Result doesn't exist with ID provied...!");
+		attemptService.deleteByResultId(id);
 		service.deleteResultById(id);
 	}	
 	

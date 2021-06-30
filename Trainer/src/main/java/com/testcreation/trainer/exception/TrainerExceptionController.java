@@ -16,7 +16,7 @@ public class TrainerExceptionController {
 		// this will handle all custom exceptions and will return message related to particular exception
 		@ExceptionHandler(value = TrainerException.class)
 		public ResponseEntity<Object> exception(TrainerException theException){
-			return new ResponseEntity<>(theException.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(theException.getMessage(),HttpStatus.BAD_REQUEST);//400 badrequest
 		}
 		
 		@ExceptionHandler(value = ConstraintViolationException.class)

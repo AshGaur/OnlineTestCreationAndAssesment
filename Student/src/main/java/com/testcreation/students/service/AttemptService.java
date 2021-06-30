@@ -68,4 +68,9 @@ public class AttemptService {
 	public Optional<Result> getResultById(Integer resultId){
 		return resultRepo.findById(resultId);
 	}
+	
+	public void deleteByResultId(Integer resultId) {
+		repo.deleteByResultListId(resultId);
+	}
+	
 }
