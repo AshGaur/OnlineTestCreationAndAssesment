@@ -12,7 +12,7 @@ The Project is built in Following Technologies:
 ##### Netflix Oases Microservices Libraries(Discovery Server,Discovery Client ,Zuul Proxy,etc.)
 ##### Maven
 
-## UI:
+## UI: Source code-> https://github.com/AshGaur/GenTests-Angular
 ##### Built in Angular
 ##### Dynamically designed to handle and refresh JWT token when required. 
 ##### Dynamic Forms
